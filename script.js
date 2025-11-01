@@ -3,45 +3,45 @@
 
 const levels = [
   // 1. Very Easy - Short words (2-4 letters)
-  { size: 10,  words: ["UR","SU","ETA","BAI","EZ","OGI","HAR","ILO","JAN","EDAN","LO","HIRU"] },
+  { size: 8,  words: ["UR","SU","ETA","BAI","EZ","OGI","HAR","ILO","JAN","EDAN","LO","HIRU"] },
   // 2. Easy - Family basics (3-5 letters)
-  { size: 11,  words: ["AMA","AITA","ETXE","SEME","ALABA","AHAL","LAGUN","MUTIL","NESKA","GURE","ZURE","NIRE"] },
+  { size: 9,  words: ["AMA","AITA","ETXE","SEME","ALABA","AHAL","LAGUN","MUTIL","NESKA","GURE","ZURE","NIRE"] },
   // 3. Easy - Simple animals (4-6 letters)
-  { size: 12,  words: ["KATU","TXORI","BEHI","ARDI","ZALDI","TXAKUR","ARRAIN","PITXI","OTSO","AZERIA","HARTZ","ASTOA"] },
+  { size: 10,  words: ["KATU","TXORI","BEHI","ARDI","ZALDI","TXAKUR","ARRAIN","PITXI","OTSO","AZERIA","HARTZ","ASTOA"] },
   // 4. Easy/Medium - Colors & Basic (4-6 letters)
-  { size: 12,  words: ["GORRI","URDIN","BERDE","HORI","BELTZ","ZURI","LARANJA","ARROSA","GRISA","MOREA","MARROIA","ORE"] },
+  { size: 10,  words: ["GORRI","URDIN","BERDE","HORI","BELTZ","ZURI","LARANJA","ARROSA","GRISA","MOREA","MARROIA","ORE"] },
   // 5. Medium - Nature (4-7 letters)
-  { size: 13,  words: ["MENDI","IBAIA","ITSASO","BASOA","ELUR","EURI","LORE","ZUHAITZ","HARRI","LURRA","AIREAN","LANDA"] },
+  { size: 11,  words: ["MENDI","IBAIA","ITSASO","BASOA","ELUR","EURI","LORE","ZUHAITZ","HARRI","LURRA","AIREAN","LANDA"] },
   // 6. Medium - Weather (4-8 letters)
-  { size: 13,  words: ["EGUZKI","ILARGI","HAIZEA","HODEI","LANBRO","IZOTZA","EKAITZ","TRUMOI","TXINGORRA","EURIA","HOTZA","BEROA"] },
+  { size: 11,  words: ["EGUZKI","ILARGI","HAIZEA","HODEI","LANBRO","IZOTZA","EKAITZ","TRUMOI","TXINGORRA","EURIA","HOTZA","BEROA"] },
   // 7. Medium - Food (4-8 letters)
-  { size: 13,  words: ["OGIA","ESNEA","ARROZA","PASTA","FRUTA","GAZTA","HARAGIA","ARRAUTZA","TOMATE","PATATA","PERRETXIKO","BABARRUN"] },
+  { size: 12,  words: ["OGIA","ESNEA","ARROZA","PASTA","FRUTA","GAZTA","HARAGIA","ARRAUTZA","TOMATE","PATATA","PERRETXIKO","BABARRUN"] },
   // 8. Medium - Body parts (4-8 letters)
-  { size: 13,  words: ["BURUA","BEGIAK","ESKUA","OINA","SUDUR","AHOA","BELARRI","SORBALDA","BEHATZ","HANKA","BIZKAR","LEPOA"] },
+  { size: 12,  words: ["BURUA","BEGIAK","ESKUA","OINA","SUDUR","AHOA","BELARRI","SORBALDA","BEHATZ","HANKA","BIZKAR","LEPOA"] },
   // 9. Medium/Hard - More animals (5-10 letters)
-  { size: 14, words: ["KATUA","TXAKURRA","AHATE","OILOA","UNTXIA","SAGUA","ELEFANTE","LEHOI","TIGRE","MERTXIKA","TXIMINO","EULIAK","ARMIARMA"] },
+  { size: 12, words: ["KATUA","TXAKURRA","AHATE","OILOA","UNTXIA","SAGUA","ELEFANTE","LEHOI","TIGRE","MERTXIKA","TXIMINO","EULIAK","ARMIARMA"] },
   // 10. Medium/Hard - School & Learning (5-10 letters)
-  { size: 14, words: ["ESKOLA","IKASLE","LIBURU","ARKATZA","GELA","TAULA","IRAKASLEA","KOADERNO","PAPERAK","IRAKURRI","IDATZI","ZENBAKI"] },
+  { size: 13, words: ["ESKOLA","IKASLE","LIBURU","ARKATZA","GELA","TAULA","IRAKASLEA","KOADERNO","PAPERAK","IRAKURRI","IDATZI","ZENBAKI"] },
   // 11. Hard - Extended family (4-8 letters)
-  { size: 14, words: ["AMONA","AITONA","ANAIA","ARREBA","IZEBA","OSABA","LEHENGUSUA","ILOBA","FAMILIA","AURRA","GAZTE","NAGUSIA"] },
+  { size: 13, words: ["AMONA","AITONA","ANAIA","ARREBA","IZEBA","OSABA","LEHENGUSUA","ILOBA","FAMILIA","AURRA","GAZTE","NAGUSIA"] },
   // 12. Hard - Action verbs (4-9 letters)
-  { size: 14, words: ["KORRIKA","DANTZA","SALTO","JAUZI","KANTU","JOLASTU","ESERI","ALTXATU","ITZULI","BOTA","HELDU","BIDALI"] },
+  { size: 13, words: ["KORRIKA","DANTZA","SALTO","JAUZI","KANTU","JOLASTU","ESERI","ALTXATU","ITZULI","BOTA","HELDU","BIDALI"] },
   // 13. Hard - Transport (4-10 letters)
-  { size: 15, words: ["AUTOA","BIZIKLETA","TRENA","HEGAZKINA","ONTZIA","AUTOBUSA","KAMIOIA","MOTOZIKLETA","METRO","TRANBIA","TAXIA","KARABANA","IBILGAILUA"] },
+  { size: 14, words: ["AUTOA","BIZIKLETA","TRENA","HEGAZKINA","ONTZIA","AUTOBUSA","KAMIOIA","MOTOZIKLETA","METRO","TRANBIA","TAXIA","KARABANA","IBILGAILUA"] },
   // 14. Hard - Fruits & Vegetables (5-10 letters)
-  { size: 15, words: ["SAGARRA","MADARIA","LIMOIA","PLATANOA","GEREZA","PIKUA","MAHATSA","AZENARIOA","PORRU","AZALOREA","BARATXURI","PEPINOA","PIPERRAK"] },
+  { size: 14, words: ["SAGARRA","MADARIA","LIMOIA","PLATANOA","GEREZA","PIKUA","MAHATSA","AZENARIOA","PORRU","AZALOREA","BARATXURI","PEPINOA","PIPERRAK"] },
   // 15. Very Hard - Places (4-10 letters)
-  { size: 15, words: ["MERKATUA","HONDARTZA","HIRIA","HERRIA","KALEA","PLAZA","ZUBIA","PARKEA","ELIZA","MUSEOA","ANTZOKIA","PORTUA","GASOLINDEGIA"] },
+  { size: 14, words: ["MERKATUA","HONDARTZA","HIRIA","HERRIA","KALEA","PLAZA","ZUBIA","PARKEA","ELIZA","MUSEOA","ANTZOKIA","PORTUA","GASOLINDEGIA"] },
   // 16. Very Hard - Time & Seasons (3-10 letters)
-  { size: 15, words: ["ORDU","ASTEA","HILABETE","URTEA","UDABERRI","UDA","UDAZKEN","NEGUA","EGUN","GAUA","GOIZA","ARRATSALDE","GABON"] },
+  { size: 14, words: ["ORDU","ASTEA","HILABETE","URTEA","UDABERRI","UDA","UDAZKEN","NEGUA","EGUN","GAUA","GOIZA","ARRATSALDE","GABON"] },
   // 17. Very Hard - Numbers (2-10 letters)
-  { size: 15, words: ["BAT","BI","LAU","BOST","SEI","ZAZPI","ZORTZI","BEDERATZI","HAMAR","EHUN","MILA","MILIOI","HAMABI"] },
+  { size: 14, words: ["BAT","BI","LAU","BOST","SEI","ZAZPI","ZORTZI","BEDERATZI","HAMAR","EHUN","MILA","MILIOI","HAMABI"] },
   // 18. Expert - House & Objects (4-11 letters)
-  { size: 16, words: ["LOGELA","SUKALDEA","KOMUNA","LEIHOA","ATEA","TEILATUA","HORMA","ZORUAK","ARMAIRUA","MAHAIA","AULKIA","OHE","ISPILUA","GILTZA"] },
+  { size: 15, words: ["LOGELA","SUKALDEA","KOMUNA","LEIHOA","ATEA","TEILATUA","HORMA","ZORUAK","ARMAIRUA","MAHAIA","AULKIA","OHE","ISPILUA","GILTZA"] },
   // 19. Expert - Activities & Sports (5-12 letters)
-  { size: 16, words: ["FUTBOLA","SASKIBALOIA","IGERIKETA","TXIRRINDULA","PILOTA","JOLASA","TENISA","ESKIATZEA","KIROLAK","GIMNASIA","ATLETISMOA","KARATERA","JOKOA"] },
+  { size: 15, words: ["FUTBOLA","SASKIBALOIA","IGERIKETA","TXIRRINDULA","PILOTA","JOLASA","TENISA","ESKIATZEA","KIROLAK","GIMNASIA","ATLETISMOA","KARATERA","JOKOA"] },
   // 20. Expert - Advanced vocabulary (5-13 letters)
-  { size: 17, words: ["ORDENAGAILUA","TELEBISTA","MUSIKA","MARRAZKETA","TXOTXONGILO","ANTZERKIA","ZINEMA","LITERATURA","POESIA","MARGOLANA","ESKULTURA","ARTEA","SORTZAILEA","PINTURA"] },
+  { size: 15, words: ["ORDENAGAILUA","TELEBISTA","MUSIKA","MARRAZKETA","TXOTXONGILO","ANTZERKIA","ZINEMA","LITERATURA","POESIA","MARGOLANA","ESKULTURA","ARTEA","SORTZAILEA","PINTURA"] },
 ];
 let currentLevelIdx = 0;
 
@@ -80,14 +80,86 @@ function buildPuzzle(p) {
     tryPlaceWord(grid, word, placements);
   }
 
-  // Fill remaining with random letters
+  // Fill remaining with random letters, avoiding accidental word formations
+  const words = p.words.map(w => w.toUpperCase());
   for (let r = 0; r < n; r++) {
     for (let c = 0; c < n; c++) {
-      if (!grid[r][c]) grid[r][c] = randomLetter();
+      if (!grid[r][c]) {
+        grid[r][c] = getSafeLetter(grid, r, c, n, words);
+      }
     }
   }
 
   return { grid, placements };
+}
+
+// Get a letter that won't accidentally form any target words
+function getSafeLetter(grid, r, c, n, words) {
+  const maxAttempts = 20;
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const letter = randomLetter();
+    grid[r][c] = letter;
+    
+    // Check if this letter completes any unplaced words in any direction
+    let formAccidentalWord = false;
+    for (const dir of DIRECTIONS) {
+      for (const word of words) {
+        if (checkWordAt(grid, r, c, word, dir, n)) {
+          formAccidentalWord = true;
+          break;
+        }
+      }
+      if (formAccidentalWord) break;
+    }
+    
+    if (!formAccidentalWord) {
+      return letter;
+    }
+  }
+  // If we can't find a safe letter after many attempts, just return a random one
+  return randomLetter();
+}
+
+// Check if a word appears at position going in a direction
+function checkWordAt(grid, r, c, word, dir, n) {
+  // Try all possible starting positions for this word that would include cell (r,c)
+  for (let offset = 0; offset < word.length; offset++) {
+    const startR = r - offset * dir.dr;
+    const startC = c - offset * dir.dc;
+    
+    // Check if word fits from this start position
+    let matches = true;
+    for (let i = 0; i < word.length; i++) {
+      const checkR = startR + i * dir.dr;
+      const checkC = startC + i * dir.dc;
+      
+      if (checkR < 0 || checkR >= n || checkC < 0 || checkC >= n) {
+        matches = false;
+        break;
+      }
+      
+      const cellValue = grid[checkR][checkC];
+      if (cellValue !== null && cellValue !== word[i]) {
+        matches = false;
+        break;
+      }
+    }
+    
+    if (matches) {
+      // Check if all letters of the word are present (not just fitting pattern)
+      let allPresent = true;
+      for (let i = 0; i < word.length; i++) {
+        const checkR = startR + i * dir.dr;
+        const checkC = startC + i * dir.dc;
+        if (grid[checkR][checkC] !== word[i]) {
+          allPresent = false;
+          break;
+        }
+      }
+      if (allPresent) return true;
+    }
+  }
+  return false;
 }
 
 function tryPlaceWord(grid, word, placements) {

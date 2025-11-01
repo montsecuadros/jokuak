@@ -121,17 +121,29 @@ button:disabled {
 .cell.correct { outline: 2px solid #46b36b; }
 .cell.wrong { outline: 2px solid #e35d5d; }
 
-.words h2 { margin: 4px 0 2px; font-size: 18px; }
+.words h2 { margin: 4px 0 8px; font-size: 18px; }
 .words ul {
   margin: 0;
-  padding-left: 22px;
-  line-height: 1.3;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
 }
 .words li { 
-  margin: 3px 0; 
-  border-left: 5px solid var(--li-color, transparent); 
-  padding-left: 6px;
-  font-size: 15px;
+  display: inline-block;
+  padding: 6px 12px;
+  background: #f0f0f0;
+  border-radius: 20px;
+  font-size: 14px;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+.words li.found {
+  background: var(--li-color, #4caf50);
+  color: white;
+  text-decoration: none;
+  border-color: var(--li-color, #4caf50);
 }
 
 /* Overlay for selection and found words */
@@ -153,19 +165,10 @@ button:disabled {
 @media (max-width: 1024px) {
   .board {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 20px;
   }
   .words {
     order: -1; /* Move word list above grid on smaller screens */
-  }
-  .words ul {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 8px;
-    padding-left: 0;
-  }
-  .words li {
-    list-style: none;
   }
 }
 
@@ -201,11 +204,14 @@ button:disabled {
   }
   .words h2 {
     font-size: 16px;
-    margin: 2px 0;
+    margin: 2px 0 6px;
+  }
+  .words ul {
+    gap: 5px;
   }
   .words li {
-    font-size: 14px;
-    margin: 2px 0;
+    font-size: 13px;
+    padding: 5px 10px;
   }
 }
 
@@ -231,9 +237,13 @@ button:disabled {
   }
   .words h2 {
     font-size: 15px;
+    margin: 2px 0 4px;
+  }
+  .words ul {
+    gap: 4px;
   }
   .words li {
-    font-size: 13px;
-    margin: 1px 0;
+    font-size: 12px;
+    padding: 4px 8px;
   }
 }
