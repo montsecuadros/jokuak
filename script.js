@@ -3,7 +3,7 @@
 
 const levels = [
   // 1. Very Easy - Short words (2-4 letters)
-  { size: 10,  words: ["UR","SU","ETA","BAI","EZ","OGI","SU","HAR","ILO","JAN","EDAN","LO"] },
+  { size: 10,  words: ["UR","SU","ETA","BAI","EZ","OGI","HAR","ILO","JAN","EDAN","LO","HIRU"] },
   // 2. Easy - Family basics (3-5 letters)
   { size: 11,  words: ["AMA","AITA","ETXE","SEME","ALABA","AHAL","LAGUN","MUTIL","NESKA","GURE","ZURE","NIRE"] },
   // 3. Easy - Simple animals (4-6 letters)
@@ -21,27 +21,27 @@ const levels = [
   // 9. Medium/Hard - More animals (5-10 letters)
   { size: 14, words: ["KATUA","TXAKURRA","AHATE","OILOA","UNTXIA","SAGUA","ELEFANTE","LEHOI","TIGRE","MERTXIKA","TXIMINO","EULIAK","ARMIARMA"] },
   // 10. Medium/Hard - School & Learning (5-10 letters)
-  { size: 14, words: ["ESKOLA","IKASLE","LIBURU","ARKATZA","GELA","TAULA","IRAKASLEA","KOADERNO","PAPERAK","MARGOTU","IDATZI","IRAKURRI"] },
+  { size: 14, words: ["ESKOLA","IKASLE","LIBURU","ARKATZA","GELA","TAULA","IRAKASLEA","KOADERNO","PAPERAK","IRAKURRI","IDATZI","ZENBAKI"] },
   // 11. Hard - Extended family (4-8 letters)
   { size: 14, words: ["AMONA","AITONA","ANAIA","ARREBA","IZEBA","OSABA","LEHENGUSUA","ILOBA","FAMILIA","AURRA","GAZTE","NAGUSIA"] },
   // 12. Hard - Action verbs (4-9 letters)
-  { size: 14, words: ["KORRIKA","DANTZA","IRAKURRI","IDATZI","SALTO","JAUZI","KANTU","JOLASTU","MARGOTU","ESERI","ALTXATU","ITZULI"] },
+  { size: 14, words: ["KORRIKA","DANTZA","SALTO","JAUZI","KANTU","JOLASTU","ESERI","ALTXATU","ITZULI","BOTA","HELDU","BIDALI"] },
   // 13. Hard - Transport (4-10 letters)
   { size: 15, words: ["AUTOA","BIZIKLETA","TRENA","HEGAZKINA","ONTZIA","AUTOBUSA","KAMIOIA","MOTOZIKLETA","METRO","TRANBIA","TAXIA","KARABANA","IBILGAILUA"] },
   // 14. Hard - Fruits & Vegetables (5-10 letters)
-  { size: 15, words: ["SAGARRA","MADARIA","LARANJA","LIMOIA","PLATANOA","GEREZA","PIKUA","MAHATSA","TIPULA","AZENARIOA","PORRU","AZALOREA","TIPULA"] },
+  { size: 15, words: ["SAGARRA","MADARIA","LIMOIA","PLATANOA","GEREZA","PIKUA","MAHATSA","AZENARIOA","PORRU","AZALOREA","BARATXURI","PEPINOA","PIPERRAK"] },
   // 15. Very Hard - Places (4-10 letters)
   { size: 15, words: ["MERKATUA","HONDARTZA","HIRIA","HERRIA","KALEA","PLAZA","ZUBIA","PARKEA","ELIZA","MUSEOA","ANTZOKIA","PORTUA","GASOLINDEGIA"] },
   // 16. Very Hard - Time & Seasons (3-10 letters)
   { size: 15, words: ["ORDU","ASTEA","HILABETE","URTEA","UDABERRI","UDA","UDAZKEN","NEGUA","EGUN","GAUA","GOIZA","ARRATSALDE","GABON"] },
   // 17. Very Hard - Numbers (2-10 letters)
-  { size: 15, words: ["BAT","BI","HIRU","LAU","BOST","SEI","ZAZPI","ZORTZI","BEDERATZI","HAMAR","EHUN","MILA","MILIOI"] },
+  { size: 15, words: ["BAT","BI","LAU","BOST","SEI","ZAZPI","ZORTZI","BEDERATZI","HAMAR","EHUN","MILA","MILIOI","HAMABI"] },
   // 18. Expert - House & Objects (4-11 letters)
   { size: 16, words: ["LOGELA","SUKALDEA","KOMUNA","LEIHOA","ATEA","TEILATUA","HORMA","ZORUAK","ARMAIRUA","MAHAIA","AULKIA","OHE","ISPILUA","GILTZA"] },
   // 19. Expert - Activities & Sports (5-12 letters)
-  { size: 16, words: ["FUTBOLA","SASKIBALOIA","IGERIKETA","TXIRRINDULA","PILOTA","JOLASA","TENISA","ESKIATZEA","ESKUA","KIROLAK","GIMNASIA","ATLETISMOA","KARATERA"] },
+  { size: 16, words: ["FUTBOLA","SASKIBALOIA","IGERIKETA","TXIRRINDULA","PILOTA","JOLASA","TENISA","ESKIATZEA","KIROLAK","GIMNASIA","ATLETISMOA","KARATERA","JOKOA"] },
   // 20. Expert - Advanced vocabulary (5-13 letters)
-  { size: 17, words: ["ORDENAGAILUA","TELEBISTA","MUSIKA","MARRAZKETA","TXOTXONGILO","ANTZERKIA","ZINEMA","DANTZA","LITERATURA","POESIA","MARGOLANA","ESKULTURA","ARTEA","SORTZAILEA"] },
+  { size: 17, words: ["ORDENAGAILUA","TELEBISTA","MUSIKA","MARRAZKETA","TXOTXONGILO","ANTZERKIA","ZINEMA","LITERATURA","POESIA","MARGOLANA","ESKULTURA","ARTEA","SORTZAILEA","PINTURA"] },
 ];
 let currentLevelIdx = 0;
 
