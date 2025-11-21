@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="eu">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Letra Zopa – Haurrentzat</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Letra Zopa (Haurrentzat)</h1>
+    </header>
+
+    <main class="app">
+      <section class="controls">
+        <div class="level-nav">
+          <button id="prevLevelBtn" class="secondary">◀ Aurrekoa</button>
+          <span id="levelDisplay" class="level-display">Maila 1/15</span>
+          <button id="nextLevelBtn" class="secondary">Hurrengoa ▶</button>
+        </div>
+        <button id="hintBtn" class="secondary">Pista</button>
+      </section>
+
+      <section class="board">
+        <div id="grid" class="grid" aria-label="Letra zopa taula"></div>
+        <aside class="words" aria-label="Hitz zerrenda">
+          <h2>Hitzak</h2>
+          <ul id="wordList"></ul>
+        </aside>
+      </section>
+    </main>
+
+    <script defer src="script.js"></script>
+  </body>
+</html>

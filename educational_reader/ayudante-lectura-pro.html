@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayudante de Lectura Pro - Aprende Letra a Letra</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Variaciones de tema */
+        body.theme-ocean {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        body.theme-sunset {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+        }
+
+        body.theme-forest {
+            background: linear-gradient(135deg, #56ab2f, #a8e6cf);
+        }
+
+        body.theme-space {
+            background: linear-gradient(135deg, #2c3e50, #4a6741);
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .settings-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #666, #888);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+        }
+
+        h1 {
+            color: #4a90e2;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            color: #4a90e2;
+        }
+
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .lang-btn {
+            background: linear-gradient(45deg, #4caf50, #66bb6a);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(45deg, #2e7d32, #4caf50);
+        }
+
+        .text-display {
+            background: #f8f9fa;
+            border: 3px solid #4a90e2;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 20px 0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ccc;
+            /* Grey text for non-active letters */
+            line-height: 1.6;
+            word-break: normal;
+            overflow-wrap: break-word;
+            transition: font-family 0.3s ease;
+            flex-wrap: wrap;
+            /* Allow wrapping for paragraphs */
+            white-space: pre-wrap;
+        }
+
+        /* Variaciones de fuente */
+        .text-display.font-serif {
+            font-family: 'Times New Roman', serif;
+        }
+
+        .text-display.font-mono {
+            font-family: 'Courier New', monospace;
+        }
+
+        .text-display.font-dyslexic {
+            font-family: 'OpenDyslexic', Arial, sans-serif;
+        }
+
+        .text-display.font-uppercase {
+            text-transform: uppercase;
+        }
+
+        .text-display.font-cursive {
+            font-family: 'Brush Script MT', 'Comic Sans MS', cursive;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .play-btn {
+            background: linear-gradient(45deg, #0288d1, #0277bd);
+            font-size: 1.2rem;
+            padding: 15px 30px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #039be5, #0288d1);
+        }
+
+        .sound-btn {
+            background: linear-gradient(45deg, #ff9800, #ffb74d);
+        }
+
+        .sound-btn.active {
+            background: linear-gradient(45deg, #f57c00, #ff9800);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .control-label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 10px;
+        }
+
+        .speed-btn {
+            background: linear-gradient(45deg, #ffa726, #ffb74d);
+            min-width: 80px;
+        }
+
+        .speed-btn.active {
+            background: linear-gradient(45deg, #ff7043, #ff8a65);
+            transform: scale(1.1);
+        }
+
+        .case-btn {
+            background: linear-gradient(45deg, #9c27b0, #ba68c8);
+            min-width: 100px;
+        }
+
+        .case-btn.active {
+            background: linear-gradient(45deg, #7b1fa2, #9c27b0);
+            transform: scale(1.1);
+        }
+
+        .progress {
+            margin: 15px 0;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #4ecdc4, #6bcf7c);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .current-letter {
+            color: #000;
+            /* Black for active letter */
+            text-shadow: 1px 0 0 #000, 0 1px 0 #000, -1px 0 0 #000, 0 -1px 0 #000;
+            /* Faux bold to prevent layout shift */
+        }
+
+        /* Specific styles for word highlighting mode */
+        .word {
+            padding: 2px 5px;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .word.current-letter {
+            text-shadow: none;
+            background-color: #e1f5fe;
+            /* Calm light blue */
+            color: #000;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            50%,
+            100% {
+                opacity: 1;
+            }
+
+            25%,
+            75% {
+                opacity: 0.6;
+            }
+        }
+
+        /* Estilos del modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        .word-list-editor {
+            margin: 20px 0;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .modal h2,
+        .modal h3 {
+            color: #4a90e2;
+            margin-bottom: 15px;
+        }
+
+        .theme-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .theme-btn {
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .theme-btn.active {
+            border-color: #4a90e2;
+            transform: scale(1.05);
+        }
+
+        .theme-default {
+            background: linear-gradient(45deg, #a8e6cf, #dcedc8);
+        }
+
+        .theme-ocean {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .theme-sunset {
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+        }
+
+        .theme-forest {
+            background: linear-gradient(45deg, #56ab2f, #a8e6cf);
+        }
+
+        .theme-space {
+            background: linear-gradient(45deg, #2c3e50, #4a6741);
+            color: white;
+        }
+
+        .difficulty-btn {
+            background: linear-gradient(45deg, #81d4fa, #4fc3f7);
+            min-width: 100px;
+        }
+
+        .difficulty-btn.active {
+            background: linear-gradient(45deg, #0277bd, #01579b);
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                max-width: 95%;
+            }
+
+            .text-display {
+                font-size: 2rem;
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .text-display {
+                font-size: 1.5rem;
+                padding: 20px;
+                min-height: 120px;
+            }
+
+            .controls {
+                gap: 8px;
+            }
+
+            button {
+                padding: 10px 16px;
+                font-size: 1rem;
+                flex: 1 1 auto;
+                /* Allow buttons to grow/shrink */
+            }
+
+            .play-btn {
+                width: 100%;
+                margin-bottom: 10px;
+                font-size: 1.5rem;
+            }
+
+            .settings-btn {
+                top: 10px;
+                right: 10px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .text-display {
+                font-size: 1.2rem;
+            }
+
+            button {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Language selector removed, defaulting to Basque -->
+
+        <button class="settings-btn" onclick="openSettings()">🔧</button>
+        <h1>🌟 Irakurketa Laguntzailea 🌟</h1>
+
+        <!-- Stats bar removed for simplicity -->
+
+        <div class="text-display" id="textDisplay">
+            ¡Haz clic en "Empezar a Leer" para comenzar!
+        </div>
+
+        <div class="progress" id="progress">
+            1. Hitza / 20
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="controls">
+            <button class="play-btn" id="playBtn" onclick="toggleReading()">
+                🎯
+            </button>
+
+            <button class="nav-btn" onclick="previousWord()">
+                ⏮️
+            </button>
+
+            <button class="nav-btn" onclick="nextWord()">
+                ⏭️
+            </button>
+
+            <button class="nav-btn" onclick="resetCurrent()">
+                🔄
+            </button>
+        </div>
+
+        <div class="control-group">
+            <span class="control-label">Maila:</span>
+            <button class="difficulty-btn active" onclick="setDifficulty('easy')">🌱 1. Maila</button>
+            <button class="difficulty-btn" onclick="setDifficulty('medium')">🌿 2. Maila</button>
+            <button class="difficulty-btn" onclick="setDifficulty('hard')">🌳 3. Maila</button>
+        </div>
+
+        <!-- Speed and Case controls removed for simplicity -->
+    </div>
+
+    <!-- Modal de Configuración -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSettings()">&times;</span>
+            <h2>🔧 Ezarpenak</h2>
+
+            <h3>🎨 Gai Bisuala</h3>
+            <div class="theme-selector">
+                <div class="theme-btn theme-default active" onclick="setTheme('default')">Lorategia</div>
+                <div class="theme-btn theme-ocean" onclick="setTheme('ocean')">Ozeanoa</div>
+                <div class="theme-btn theme-sunset" onclick="setTheme('sunset')">Ilunabarra</div>
+                <div class="theme-btn theme-forest" onclick="setTheme('forest')">Basoa</div>
+                <div class="theme-btn theme-space" onclick="setTheme('space')">Espazioa</div>
+            </div>
+
+            <h3>🔤 Letra-tipoa</h3>
+            <div class="control-group">
+                <button class="nav-btn active" onclick="setFont('default')">🅰️ Lehenetsia</button>
+                <button class="nav-btn" onclick="setFont('dyslexic')">👓 Dislexia</button>
+                <button class="nav-btn" onclick="setFont('uppercase')">⬆️ Larriak</button>
+                <button class="nav-btn" onclick="setFont('cursive')">✒️ Idazkera</button>
+            </div>
+
+            <h3>🔦 Nabarmendu Modua</h3>
+            <div class="control-group">
+                <button class="nav-btn active" onclick="setHighlightMode('letter')">🔤 Letra</button>
+                <button class="nav-btn" onclick="setHighlightMode('word')">📝 Hitza</button>
+            </div>
+
+            <h3>📏 Letra Tamaina</h3>
+            <div class="control-group">
+                <input type="range" id="fontSizeSlider" min="1" max="5" step="0.5" value="2.5"
+                    oninput="setFontSize(this.value)" style="width: 100%;">
+                <span id="fontSizeValue">2.5rem</span>
+            </div>
+
+            <h3>⏱️ Abiadura</h3>
+            <div class="control-group">
+                <input type="range" id="speedSlider" min="100" max="2000" step="100" value="500"
+                    oninput="setSpeed(this.value)" style="width: 100%; direction: rtl;">
+                <span id="speedValue">500ms</span>
+            </div>
+
+            <h3>📚 Hitz Zerrenda Pertsonalizatua</h3>
+            <div class="word-list-editor">
+                <textarea id="customWordList"
+                    placeholder="Idatzi zure hitzak edo esaldiak hemen, lerro bakoitzean bat..."></textarea>
+                <br><br>
+                <button class="nav-btn" onclick="loadCustomWords()">� Kargatu</button>
+                <button class="nav-btn" onclick="resetToDefault()">↩️ Berrezarri</button>
+                <button class="nav-btn" onclick="exportWordList()">⬇️ Esportatu</button>
+                <input type="file" id="importFile" accept=".txt" style="display: none;" onchange="importWordList()">
+                <button class="nav-btn" onclick="document.getElementById('importFile').click()">⬆️ Inportatu</button>
+            </div>
+
+            <h3>📊 Aurrerapena</h3>
+            <div class="control-group">
+                <button class="nav-btn" onclick="resetProgress()">❌ Ezabatu</button>
+                <button class="nav-btn" onclick="exportProgress()">� Esportatu</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Listas de palabras por dificultad en euskera
+        const wordLists = {
+            easy: [
+                "Katua etxean dago.",
+                "Txakurra parkean jolasten da.",
+                "Eguzkia beroa da.",
+                "Nire lagunak eskolan daude.",
+                "Gaur eguraldi ona egiten du.",
+                "Mendiak altuak eta politak dira.",
+                "Itsasoa urdina eta handia da.",
+                "Txoriek zuhaitzetan abesten dute.",
+                "Liburuak irakurtzea gustatzen zait.",
+                "Gure etxea txuria da."
+            ],
+            medium: [
+                "Gaur goizean, eguzkia atera denean, txoriak kantari hasi dira zuhaitzetan.",
+                "Loreak ireki dira eta parkea kolorez bete da.",
+                "Umeak baloiarekin jolasten ari dira plazan, eta barre egiten dute pozik.",
+                "Haize leunak zuhaitzen hostoak mugitzen ditu astiro-astiro.",
+                "Nire herria txikia baina oso polita da.",
+                "Etxe zuriak ditu eta kale estuak.",
+                "Erdian plaza handi bat dago, eta han jendea elkartzen da hitz egiteko.",
+                "Asteburuetan azoka bat egoten da, eta baserritarrek beren produktuak saltzen dituzte."
+            ],
+            hard: [
+                "Antzina, mendi altuen artean, herri txiki bat ezkutatzen zen.",
+                "Bertako biztanleak naturarekin bat eginda bizi ziren, urtaroen erritmoa jarraituz.",
+                "Neguan, elurrak dena estaltzen zuenean, etxe barruan biltzen ziren suaren inguruan, istorio zaharrak kontatzeko.",
+                "Udaberrian, berriz, zelaiak lorez betetzen ziren eta artaldeak mendira igotzen ziren bazkera bila.",
+                "Bizimodu lasaia zen, baina lan gogorrekoa ere bai.",
+                "Itsasoaren ondoan bizitzeak badu zerbait berezia.",
+                "Olatuen soinuak lasaitasuna ematen du, eta kresalaren usaina airean nabaritzen da beti.",
+                "Arrantzaleak goizean goiz ateratzen dira itsasora, eguzkia atera baino lehen, arrain freskoen bila.",
+                "Portuan, itsasontzi koloretsuak kulunka aritzen dira uraren gainean, eta kaioek zerua zeharkatzen dute janari bila.",
+                "Ilunabarrean, eguzkia itsasoan sartzen denean, zerua kolore gorri eta laranjaz janzten da."
+            ]
+        };
+
+        let currentLanguage = 'eu';
+        let content = [...wordLists.easy];
+        let currentIndex = 0;
+        let currentLetterIndex = 0;
+        let isPlaying = false;
+        let animationSpeed = 500;
+        let animationTimer;
+        let currentCase = 'normal';
+        let currentDifficulty = 'easy';
+        let currentTheme = 'default';
+        let currentFont = 'default';
+        let currentFontSize = 2.5;
+        let highlightMode = 'letter'; // 'letter' or 'word'
+
+        // Seguimiento de progreso
+        let sessionStats = {
+            wordsCompleted: 0,
+            startTime: Date.now(),
+            currentStreak: 0,
+            totalWords: 0,
+            correctWords: 0
+        };
+
+        // Función auxiliar para transformar texto según la configuración de mayúsculas/minúsculas
+        function transformText(text) {
+            switch (currentCase) {
+                case 'uppercase':
+                    return text.toUpperCase();
+                case 'lowercase':
+                    return text.toLowerCase();
+                default:
+                    return text;
+            }
+        }
+
+        // Renderizar el texto con spans estáticos para evitar movimientos
+        function renderText() {
+            const text = transformText(content[currentIndex]);
+            const displayElement = document.getElementById('textDisplay');
+
+            if (highlightMode === 'letter') {
+                const chars = Array.from(text);
+                const html = chars.map((char, index) => {
+                    return `<span id="item-${index}" class="letter">${char}</span>`;
+                }).join('');
+                displayElement.innerHTML = html;
+            } else {
+                // Word mode: split by spaces but keep delimiters to preserve spacing
+                // We want to wrap "words" in spans, but keep spaces outside or in their own spans
+                // Simple approach: split by spaces
+                const parts = text.split(/(\s+)/);
+                let itemIndex = 0;
+                const html = parts.map((part) => {
+                    if (part.trim() === '') {
+                        return `<span class="space">${part}</span>`;
+                    } else {
+                        const span = `<span id="item-${itemIndex}" class="word">${part}</span>`;
+                        itemIndex++;
+                        return span;
+                    }
+                }).join('');
+                displayElement.innerHTML = html;
+            }
+        }
+
+        // Inicializar la aplicación
+        function init() {
+            // Force Basque initially if not loaded from settings
+            if (!localStorage.getItem('readingHelperSettings')) {
+                setLanguage('eu');
+            }
+            updateProgress();
+            resetCurrent();
+            updateStats();
+            loadSettings();
+            startSessionTimer();
+        }
+
+        function toggleReading() {
+            if (isPlaying) {
+                pauseReading();
+            } else {
+                startReading();
+            }
+        }
+
+        function startReading() {
+            if (currentLetterIndex >= content[currentIndex].length) {
+                resetCurrent();
+            }
+
+            isPlaying = true;
+            document.getElementById('playBtn').innerHTML = '⏸️';
+            animateReading();
+        }
+
+        function pauseReading() {
+            isPlaying = false;
+            document.getElementById('playBtn').innerHTML = '▶️';
+            clearTimeout(animationTimer);
+        }
+
+        function animateReading() {
+            if (!isPlaying) return;
+
+            const currentText = transformText(content[currentIndex]);
+
+            // Calculate max index based on mode
+            let maxIndex;
+            if (highlightMode === 'letter') {
+                maxIndex = currentText.length;
+            } else {
+                // Count non-empty parts from split
+                maxIndex = currentText.split(/(\s+)/).filter(p => p.trim() !== '').length;
+            }
+
+            if (currentLetterIndex < maxIndex) {
+                // Quitar resaltado anterior
+                const prev = document.querySelector('.current-letter');
+                if (prev) prev.classList.remove('current-letter');
+
+                // Resaltar actual
+                const current = document.getElementById(`item-${currentLetterIndex}`);
+                if (current) {
+                    current.classList.add('current-letter');
+                }
+
+                currentLetterIndex++;
+
+                animationTimer = setTimeout(() => {
+                    animateReading();
+                }, animationSpeed);
+            } else {
+                // Animación completa
+                // Quitar último resaltado
+                const prev = document.querySelector('.current-letter');
+                if (prev) prev.classList.remove('current-letter');
+
+                pauseReading();
+                document.getElementById('playBtn').innerHTML = '🎯';
+
+                // Marcar palabra como completada
+                sessionStats.wordsCompleted++;
+                sessionStats.currentStreak++;
+                sessionStats.correctWords++;
+                updateStats();
+
+                // Avanzar automáticamente después de una breve pausa
+                setTimeout(() => {
+                    if (currentIndex < content.length - 1) {
+                        nextWord();
+                    } else {
+                        celebrateCompletion();
+                    }
+                }, 1000);
+            }
+        }
+
+        function nextWord() {
+            if (currentIndex < content.length - 1) {
+                currentIndex++;
+                resetCurrent();
+                updateProgress();
+            }
+        }
+
+        function previousWord() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                resetCurrent();
+                updateProgress();
+            }
+        }
+
+        function resetCurrent() {
+            pauseReading();
+            currentLetterIndex = 0;
+            renderText();
+            document.getElementById('playBtn').innerHTML = '🎯';
+        }
+
+        function setSpeed(speed) {
+            animationSpeed = speed;
+            updateActiveButton('.speed-btn', event.target);
+        }
+
+        function setCase(caseType) {
+            currentCase = caseType;
+            updateActiveButton('.case-btn', event.target);
+            resetCurrent();
+        }
+
+        function setDifficulty(difficulty) {
+            currentDifficulty = difficulty;
+            content = [...wordLists[difficulty]];
+            currentIndex = 0;
+            updateActiveButton('.difficulty-btn', event.target);
+            updateProgress();
+            resetCurrent();
+        }
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            // Ensure content is updated based on current difficulty
+            content = [...wordLists[currentDifficulty]];
+            currentIndex = 0;
+            updateActiveButton('.lang-btn', event.target);
+            updateProgress();
+            resetCurrent();
+            updateUILanguage(lang);
+            saveSettings();
+        }
+
+        function updateUILanguage(lang) {
+            if (lang === 'eu') {
+                // Cambiar elementos de UI al euskera
+                document.querySelector('h1').textContent = '🌟 Irakurketa Laguntzailea 🌟';
+                document.querySelector('#textDisplay').innerHTML = 'Sakatu "🎯" hasteko!';
+            } else {
+                // Mantener en español
+                document.querySelector('h1').textContent = '🌟 Ayudante de Lectura Pro 🌟';
+                document.querySelector('#textDisplay').innerHTML = '¡Haz clic en "🎯" para comenzar!';
+            }
+        }
+
+        function updateActiveButton(selector, activeButton) {
+            document.querySelectorAll(selector).forEach(btn => {
+                btn.classList.remove('active');
+            });
+            activeButton.classList.add('active');
+        }
+
+        function updateProgress() {
+            document.getElementById('progress').innerHTML =
+                `${currentIndex + 1}. Hitza / ${content.length}`;
+
+            const progressPercent = ((currentIndex + 1) / content.length) * 100;
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+        }
+
+        function updateStats() {
+            document.getElementById('wordsCompleted').textContent = sessionStats.wordsCompleted;
+            document.getElementById('currentStreak').textContent = sessionStats.currentStreak;
+
+            const accuracy = sessionStats.totalWords > 0 ?
+                Math.round((sessionStats.correctWords / sessionStats.totalWords) * 100) : 100;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+        }
+
+        function startSessionTimer() {
+            setInterval(() => {
+                const elapsed = Math.floor((Date.now() - sessionStats.startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('sessionTime').textContent =
+                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function celebrateCompletion() {
+            document.getElementById('textDisplay').innerHTML = '🎉 Bikain! Hitz guztiak irakurri dituzu! 🎉';
+        }
+
+        // Funciones del modal de configuración
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'block';
+            document.getElementById('customWordList').value = content.join('\n');
+            // Update slider value
+            document.getElementById('fontSizeSlider').value = currentFontSize;
+            document.getElementById('fontSizeValue').textContent = currentFontSize + 'rem';
+
+            // Update speed slider
+            document.getElementById('speedSlider').value = animationSpeed;
+            document.getElementById('speedValue').textContent = animationSpeed + 'ms';
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+
+        function setTheme(theme) {
+            currentTheme = theme;
+            document.body.className = theme !== 'default' ? `theme-${theme}` : '';
+            updateActiveButton('.theme-btn', event.target);
+            saveSettings();
+        }
+
+        function setFont(font) {
+            currentFont = font;
+            const display = document.getElementById('textDisplay');
+            display.className = display.className.replace(/font-\w+/g, '');
+            if (font !== 'default') {
+                display.classList.add(`font-${font}`);
+            }
+            updateActiveButton('.modal .nav-btn', event.target);
+            saveSettings();
+        }
+
+        function setFontSize(size) {
+            currentFontSize = size;
+            document.getElementById('textDisplay').style.fontSize = size + 'rem';
+            document.getElementById('fontSizeValue').textContent = size + 'rem';
+            saveSettings();
+        }
+
+        function setSpeed(speed) {
+            animationSpeed = parseInt(speed);
+            document.getElementById('speedValue').textContent = speed + 'ms';
+            saveSettings();
+        }
+
+        function setHighlightMode(mode) {
+            highlightMode = mode;
+            updateActiveButton('.modal .control-group button', event.target); // This might be too broad selector, but works for now
+            // Better selector for specific group
+            const buttons = event.target.parentElement.querySelectorAll('button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            resetCurrent();
+            saveSettings();
+        }
+
+        function setHighlightModeWithoutEvent(mode) {
+            highlightMode = mode;
+            // Update UI
+            // This is tricky without specific IDs, let's assume default is letter
+            // We can add IDs to buttons later if needed, or just rely on save/load
+        }
+
+        function loadCustomWords() {
+            const customText = document.getElementById('customWordList').value;
+            const words = customText.split('\n').filter(word => word.trim() !== '');
+            if (words.length > 0) {
+                content = words;
+                currentIndex = 0;
+                updateProgress();
+                resetCurrent();
+                closeSettings();
+            }
+        }
+
+        function resetToDefault() {
+            content = [...wordLists[currentDifficulty]];
+            currentIndex = 0;
+            updateProgress();
+            resetCurrent();
+            document.getElementById('customWordList').value = content.join('\n');
+        }
+
+        function exportWordList() {
+            const dataStr = content.join('\n');
+            const dataBlob = new Blob([dataStr], { type: 'text/plain' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `lista-palabras-${currentLanguage}.txt`;
+            link.click();
+        }
+
+        function importWordList() {
+            const file = document.getElementById('importFile').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const words = e.target.result.split('\n').filter(word => word.trim() !== '');
+                    if (words.length > 0) {
+                        content = words;
+                        currentIndex = 0;
+                        updateProgress();
+                        resetCurrent();
+                        document.getElementById('customWordList').value = content.join('\n');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function resetProgress() {
+            if (confirm('¿Estás seguro de que quieres borrar todos los datos de progreso?')) {
+                sessionStats = {
+                    wordsCompleted: 0,
+                    startTime: Date.now(),
+                    currentStreak: 0,
+                    totalWords: 0,
+                    correctWords: 0
+                };
+                updateStats();
+                localStorage.removeItem('readingHelperStats');
+            }
+        }
+
+        function exportProgress() {
+            const stats = {
+                ...sessionStats,
+                sessionLength: Date.now() - sessionStats.startTime,
+                difficulty: currentDifficulty,
+                language: currentLanguage,
+                wordsInList: content.length
+            };
+
+            const dataStr = JSON.stringify(stats, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `progreso-lectura-${currentLanguage}.json`;
+            link.click();
+        }
+
+        function saveSettings() {
+            const settings = {
+                theme: currentTheme,
+                font: currentFont,
+                difficulty: currentDifficulty,
+                case: currentCase,
+                speed: animationSpeed,
+                language: currentLanguage,
+                fontSize: currentFontSize,
+                highlightMode: highlightMode
+            };
+            localStorage.setItem('readingHelperSettings', JSON.stringify(settings));
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('readingHelperSettings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                if (settings.theme) setThemeWithoutEvent(settings.theme);
+                if (settings.font) setFontWithoutEvent(settings.font);
+                if (settings.language) setLanguageWithoutEvent(settings.language);
+                if (settings.fontSize) setFontSizeWithoutEvent(settings.fontSize);
+                if (settings.highlightMode) {
+                    highlightMode = settings.highlightMode;
+                    // Update UI buttons for highlight mode would be good here
+                }
+                if (settings.speed) {
+                    animationSpeed = settings.speed;
+                }
+            }
+        }
+
+        function setThemeWithoutEvent(theme) {
+            currentTheme = theme;
+            document.body.className = theme !== 'default' ? `theme-${theme}` : '';
+        }
+
+        function setFontWithoutEvent(font) {
+            currentFont = font;
+            const display = document.getElementById('textDisplay');
+            display.className = display.className.replace(/font-\w+/g, '');
+            if (font !== 'default') {
+                display.classList.add(`font-${font}`);
+            }
+        }
+
+        function setLanguageWithoutEvent(lang) {
+            currentLanguage = lang;
+            content = [...wordLists[currentDifficulty]];
+            updateUILanguage(lang);
+        }
+
+        function setFontSizeWithoutEvent(size) {
+            currentFontSize = size;
+            document.getElementById('textDisplay').style.fontSize = size + 'rem';
+        }
+
+        // Controles de teclado
+        document.addEventListener('keydown', function (event) {
+            switch (event.key) {
+                case ' ':
+                    event.preventDefault();
+                    toggleReading();
+                    break;
+                case 'ArrowRight':
+                    nextWord();
+                    break;
+                case 'ArrowLeft':
+                    previousWord();
+                    break;
+                case 'r':
+                case 'R':
+                    resetCurrent();
+                    break;
+                case 'Escape':
+                    closeSettings();
+                    break;
+            }
+        });
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function (event) {
+            const modal = document.getElementById('settingsModal');
+            if (event.target === modal) {
+                closeSettings();
+            }
+        }
+
+        // Inicializar cuando la página se carga
+        window.addEventListener('load', init);
+    </script>
+</body>
+
+</html>
