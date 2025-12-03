@@ -46,12 +46,12 @@ const levels = [
 let currentLevelIdx = 0;
 
 const COLOR_PALETTE = [
-  { bg: '#fff59d', outline: '#fbc02d' }, // yellow
-  { bg: '#bbdefb', outline: '#1e88e5' }, // blue
-  { bg: '#c8e6c9', outline: '#43a047' }, // green
-  { bg: '#ffcdd2', outline: '#e53935' }, // red
-  { bg: '#e1bee7', outline: '#8e24aa' }, // purple
-  { bg: '#ffe0b2', outline: '#fb8c00' }  // orange
+  { bg: 'rgba(251, 192, 45, 0.25)', outline: '#fbc02d' }, // yellow
+  { bg: 'rgba(30, 136, 229, 0.25)', outline: '#1e88e5' }, // blue
+  { bg: 'rgba(67, 160, 71, 0.25)', outline: '#43a047' }, // green
+  { bg: 'rgba(229, 57, 53, 0.25)', outline: '#e53935' }, // red
+  { bg: 'rgba(142, 36, 170, 0.25)', outline: '#8e24aa' }, // purple
+  { bg: 'rgba(251, 140, 0, 0.25)', outline: '#fb8c00' }  // orange
 ];
 
 const DIRECTIONS = [
@@ -327,6 +327,11 @@ function render(p) {
 
   function setSelectionPath(path) {
     // Use a rounded overlay pill instead of per-cell selection styling
+    // Only update if the path has changed
+    if (selectedCells.length === path.length && sameCells(selectedCells, path)) {
+      return; // Path hasn't changed, no need to update
+    }
+    
     clearSelection();
     selectedCells = path;
     if (!path.length) return;
@@ -392,25 +397,64 @@ function render(p) {
     setSelectionPath([{ r, c, el: cell }]);
   }
 
+  let lastMoveTime = 0;
+  const THROTTLE_MS = 16; // ~60fps
+  let pendingMouseMove = null;
+  let lastMouseCoords = { x: 0, y: 0 };
+
   function handleMouseMove(ev) {
     if (!isSelecting || !start) return;
-    const el = document.elementFromPoint(ev.clientX, ev.clientY);
-    const cell = el?.closest?.('.cell') || ev.target.closest?.('.cell');
-    if (!cell) return;
-    const r = Number(cell.dataset.r), c = Number(cell.dataset.c);
-    const path = computePath(start, { r, c });
-    if (path.length) setSelectionPath(path);
+    
+    // Always store the latest coordinates immediately (Safari fix)
+    lastMouseCoords = { x: ev.clientX, y: ev.clientY };
+    
+    // Use requestAnimationFrame for smooth rendering
+    if (pendingMouseMove) {
+      return; // Skip scheduling new frame, but coordinates are updated
+    }
+    
+    pendingMouseMove = requestAnimationFrame(() => {
+      const el = document.elementFromPoint(lastMouseCoords.x, lastMouseCoords.y);
+      const cell = el?.closest?.('.cell');
+      if (!cell) {
+        pendingMouseMove = null;
+        return;
+      }
+      const r = Number(cell.dataset.r), c = Number(cell.dataset.c);
+      
+      // Only update if we're on a different cell
+      const path = computePath(start, { r, c });
+      if (path.length) setSelectionPath(path);
+      
+      pendingMouseMove = null;
+    });
   }
 
-  function handleMouseUp() {
+  function handleMouseUp(ev) {
     if (!isSelecting) return;
+    
+    // Ensure we process the final mouse position
+    if (pendingMouseMove) {
+      cancelAnimationFrame(pendingMouseMove);
+      pendingMouseMove = null;
+    }
+    
+    // Get the final cell under the mouse
+    const el = document.elementFromPoint(ev.clientX, ev.clientY);
+    const cell = el?.closest?.('.cell');
+    if (cell && start) {
+      const r = Number(cell.dataset.r), c = Number(cell.dataset.c);
+      const path = computePath(start, { r, c });
+      if (path.length) setSelectionPath(path);
+    }
+    
     isSelecting = false;
     checkSelection();
     start = null;
   }
 
   gridEl.addEventListener('mousedown', handleMouseDown);
-  gridEl.addEventListener('mousemove', handleMouseMove);
+  gridEl.addEventListener('mousemove', handleMouseMove, { passive: true });
   window.addEventListener('mouseup', handleMouseUp);
 
   // Provide cleanup for re-renders (remove listeners)
@@ -419,12 +463,15 @@ function render(p) {
     gridEl.removeEventListener('mousedown', handleMouseDown);
     gridEl.removeEventListener('mousemove', handleMouseMove);
     window.removeEventListener('mouseup', handleMouseUp);
-    gridEl.removeEventListener('touchstart', handleTouchStart, { passive: false });
-    gridEl.removeEventListener('touchmove', handleTouchMove, { passive: false });
-    window.removeEventListener('touchend', handleTouchEnd, { passive: false });
+    gridEl.removeEventListener('touchstart', handleTouchStart);
+    gridEl.removeEventListener('touchmove', handleTouchMove);
+    window.removeEventListener('touchend', handleTouchEnd);
   };
 
   // Touch support
+  let pendingTouchMove = null;
+  let lastTouchCoords = { x: 0, y: 0 };
+  
   function getCellFromTouch(ev) {
     const t = ev.touches?.[0] || ev.changedTouches?.[0];
     if (!t) return null;
@@ -447,16 +494,53 @@ function render(p) {
   function handleTouchMove(ev) {
     if (!isSelecting || !start) return;
     ev.preventDefault();
-    const cell = getCellFromTouch(ev);
-    if (!cell) return;
-    const r = Number(cell.dataset.r), c = Number(cell.dataset.c);
-    const path = computePath(start, { r, c });
-    if (path.length) setSelectionPath(path);
+    
+    // Store touch coordinates immediately (Safari iOS fix)
+    const t = ev.touches?.[0];
+    if (!t) return;
+    lastTouchCoords = { x: t.clientX, y: t.clientY };
+    
+    // Use requestAnimationFrame for smooth touch tracking
+    if (pendingTouchMove) {
+      return; // Skip if already pending (Safari performs better this way)
+    }
+    
+    pendingTouchMove = requestAnimationFrame(() => {
+      const el = document.elementFromPoint(lastTouchCoords.x, lastTouchCoords.y);
+      const cell = el?.closest?.('.cell');
+      if (!cell) {
+        pendingTouchMove = null;
+        return;
+      }
+      const r = Number(cell.dataset.r), c = Number(cell.dataset.c);
+      const path = computePath(start, { r, c });
+      if (path.length) setSelectionPath(path);
+      pendingTouchMove = null;
+    });
   }
 
   function handleTouchEnd(ev) {
     if (!isSelecting) return;
     ev.preventDefault();
+    
+    // Ensure we process the final touch position
+    if (pendingTouchMove) {
+      cancelAnimationFrame(pendingTouchMove);
+      pendingTouchMove = null;
+    }
+    
+    // Get the final cell under the touch
+    const t = ev.changedTouches?.[0];
+    if (t && start) {
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      const cell = el?.closest?.('.cell');
+      if (cell) {
+        const r = Number(cell.dataset.r), c = Number(cell.dataset.c);
+        const path = computePath(start, { r, c });
+        if (path.length) setSelectionPath(path);
+      }
+    }
+    
     isSelecting = false;
     checkSelection();
     start = null;
