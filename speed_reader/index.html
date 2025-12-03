@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lector Rápido</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Lector Rápido</h1>
+            <p class="subtitle">Mejora tu velocidad de lectura manteniendo la comprensión</p>
+        </header>
+
+        <!-- Settings Bar -->
+        <div class="settings-bar">
+            <div class="settings-container">
+                <div class="setting-item">
+                    <label for="language-select">Idioma:</label>
+                    <select id="language-select" class="control-select">
+                        <option value="spanish">Español</option>
+                        <option value="basque">Euskera</option>
+                    </select>
+                </div>
+
+                <div class="setting-item">
+                    <label for="wpm-slider">Velocidad:</label>
+                    <input type="range" id="wpm-slider" min="50" max="600" value="300" class="slider">
+                    <span id="wpm-display" class="value-display">300 PPM</span>
+                </div>
+
+                <div class="setting-item">
+                    <label for="font-size-slider">Tamaño:</label>
+                    <input type="range" id="font-size-slider" min="24" max="56" value="40" class="slider">
+                    <span id="font-size-display" class="value-display">40px</span>
+                </div>
+
+                <button id="settings-toggle" class="btn btn-secondary">Gestionar Frases</button>
+            </div>
+        </div>
+
+        <!-- Sentences Management Panel (Hidden by default) -->
+        <div id="sentences-panel" class="custom-text-panel" style="display: none;">
+            <div class="panel-content">
+                <div class="language-tabs">
+                    <button class="tab-btn active" data-lang="spanish">Español</button>
+                    <button class="tab-btn" data-lang="basque">Euskera</button>
+                </div>
+
+                <div class="sentences-container">
+                    <div id="sentences-list-spanish" class="sentences-list active">
+                        <!-- Spanish sentences will be rendered here -->
+                    </div>
+                    <div id="sentences-list-basque" class="sentences-list">
+                        <!-- Basque sentences will be rendered here -->
+                    </div>
+                </div>
+
+                <div class="add-sentence-form">
+                    <input type="text" id="new-sentence-input" placeholder="Escribe una nueva frase..." class="control-input">
+                    <button id="add-sentence-btn" class="btn btn-primary">Añadir Frase</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reading Area -->
+        <div class="main-content">
+            <section class="reading-section">
+                <div class="reading-container">
+                    <div id="word-display" class="word-display">¿Listo para empezar?</div>
+                    
+                    <div class="stats-display">
+                        <div class="stat-item">
+                            <span class="stat-label">Progreso:</span>
+                            <span id="progress-display" class="stat-value">0%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Palabras:</span>
+                            <span id="word-counter-display" class="stat-value">0/0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Tiempo:</span>
+                            <span id="time-display" class="stat-value">0:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-controls">
+                    <button id="start-button" class="btn btn-primary btn-large">Comenzar</button>
+                    <button id="pause-button" class="btn btn-secondary btn-large" disabled>Pausar</button>
+                    <button id="resume-button" class="btn btn-secondary btn-large" disabled>Reanudar</button>
+                    <button id="stop-button" class="btn btn-danger btn-large">Detener</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- Comprehension Section -->
+        <section id="comprehension-container" class="comprehension-section" style="display: none;">
+            <h2>Verificación de Comprensión</h2>
+            <div id="comprehension-content"></div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-container" class="results-section" style="display: none;">
+            <h2>Resultados de la Sesión</h2>
+            <div id="results-content"></div>
+        </section>
+
+        <footer class="app-footer">
+            <p>Consejo: Ajusta la configuración según tus necesidades para una mejor experiencia de lectura.</p>
+            <p>© 2024 Lector Rápido</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
