@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: 'Comic Sans MS', cursive, Arial, sans-serif;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', 'Marker Felt', cursive, Arial, sans-serif;
             background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
             min-height: 100vh;
             display: flex;
@@ -21,6 +21,8 @@
             align-items: center;
             padding: 20px;
             transition: all 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* Variaciones de tema */
@@ -58,12 +60,11 @@
             background: linear-gradient(45deg, #666, #888);
             color: white;
             border: none;
-            padding: 10px;
-            border-radius: 50%;
+            padding: 10px 15px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1.2rem;
-            width: 40px;
-            height: 40px;
+            font-size: 0.9rem;
+            font-weight: bold;
         }
 
         h1 {
@@ -117,8 +118,8 @@
         }
 
         .text-display {
-            background: #f8f9fa;
-            border: 3px solid #4a90e2;
+            background: #fffde7;
+            border: 3px solid #f9a825;
             border-radius: 15px;
             padding: 40px;
             margin: 20px 0;
@@ -128,28 +129,26 @@
             justify-content: center;
             font-size: 2.5rem;
             font-weight: bold;
-            color: #ccc;
-            /* Grey text for non-active letters */
+            color: #b0a090;
             line-height: 1.6;
             word-break: normal;
             overflow-wrap: break-word;
             transition: font-family 0.3s ease;
             flex-wrap: wrap;
-            /* Allow wrapping for paragraphs */
             white-space: pre-wrap;
         }
 
         /* Variaciones de fuente */
         .text-display.font-serif {
-            font-family: 'Times New Roman', serif;
+            font-family: 'Times New Roman', 'Georgia', serif;
         }
 
         .text-display.font-mono {
-            font-family: 'Courier New', monospace;
+            font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
         }
 
         .text-display.font-dyslexic {
-            font-family: 'OpenDyslexic', Arial, sans-serif;
+            font-family: 'OpenDyslexic', 'Verdana', Arial, sans-serif;
         }
 
         .text-display.font-uppercase {
@@ -157,7 +156,7 @@
         }
 
         .text-display.font-cursive {
-            font-family: 'Brush Script MT', 'Comic Sans MS', cursive;
+            font-family: 'Brush Script MT', 'Apple Chancery', 'Comic Sans MS', 'Chalkboard SE', cursive;
         }
 
         .controls {
@@ -266,10 +265,11 @@
         }
 
         .current-letter {
-            color: #000;
-            /* Black for active letter */
-            text-shadow: 1px 0 0 #000, 0 1px 0 #000, -1px 0 0 #000, 0 -1px 0 #000;
-            /* Faux bold to prevent layout shift */
+            color: #fff;
+            background-color: #e65100;
+            border-radius: 5px;
+            padding: 0 3px;
+            text-shadow: none;
         }
 
         /* Specific styles for word highlighting mode */
@@ -284,6 +284,22 @@
             background-color: #e1f5fe;
             /* Calm light blue */
             color: #000;
+        }
+
+        /* Specific styles for syllable highlighting mode */
+        .syllable {
+            padding: 1px 2px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+            display: inline-block;
+        }
+
+        .syllable.current-letter {
+            text-shadow: none;
+            background-color: #fff9c4;
+            /* Light yellow for syllables */
+            color: #000;
+            font-weight: bold;
         }
 
         @keyframes pulse {
@@ -410,6 +426,16 @@
             transform: scale(1.1);
         }
 
+        .speed-preset-btn {
+            background: linear-gradient(45deg, #ffb74d, #ffa726);
+            min-width: 110px;
+        }
+
+        .speed-preset-btn.active {
+            background: linear-gradient(45deg, #e65100, #f4511e);
+            transform: scale(1.1);
+        }
+
         @media (max-width: 900px) {
             .container {
                 max-width: 95%;
@@ -481,13 +507,13 @@
     <div class="container">
         <!-- Language selector removed, defaulting to Basque -->
 
-        <button class="settings-btn" onclick="openSettings()">🔧</button>
-        <h1>🌟 Irakurketa Laguntzailea 🌟</h1>
+        <button class="settings-btn" onclick="openSettings()">⚙ Ezarpenak</button>
+        <h1>Irakurketa Laguntzailea</h1>
 
         <!-- Stats bar removed for simplicity -->
 
         <div class="text-display" id="textDisplay">
-            ¡Haz clic en "Empezar a Leer" para comenzar!
+            Sakatu "Hasi" hasteko!
         </div>
 
         <div class="progress" id="progress">
@@ -500,39 +526,45 @@
 
         <div class="controls">
             <button class="play-btn" id="playBtn" onclick="toggleReading()">
-                🎯
+                ▶ Hasi
             </button>
 
             <button class="nav-btn" onclick="previousWord()">
-                ⏮️
+                ◀ Aurrekoa
             </button>
 
             <button class="nav-btn" onclick="nextWord()">
-                ⏭️
+                Hurrengoa ▶
             </button>
 
             <button class="nav-btn" onclick="resetCurrent()">
-                🔄
+                ↻ Berrezarri
             </button>
         </div>
 
         <div class="control-group">
             <span class="control-label">Maila:</span>
-            <button class="difficulty-btn active" onclick="setDifficulty('easy')">🌱 1. Maila</button>
-            <button class="difficulty-btn" onclick="setDifficulty('medium')">🌿 2. Maila</button>
-            <button class="difficulty-btn" onclick="setDifficulty('hard')">🌳 3. Maila</button>
+            <button class="difficulty-btn active" onclick="setDifficulty('easy')">1. Maila (Erraza)</button>
+            <button class="difficulty-btn" onclick="setDifficulty('medium')">2. Maila (Ertaina)</button>
+            <button class="difficulty-btn" onclick="setDifficulty('hard')">3. Maila (Zaila)</button>
         </div>
 
-        <!-- Speed and Case controls removed for simplicity -->
+        <div class="control-group">
+            <span class="control-label">Abiadura:</span>
+            <button class="speed-preset-btn" onclick="setSpeedPreset(2000, this)">🐢 Oso Motel</button>
+            <button class="speed-preset-btn active" onclick="setSpeedPreset(1000, this)">🚶 Motel</button>
+            <button class="speed-preset-btn" onclick="setSpeedPreset(500, this)">🚴 Azkar</button>
+            <button class="speed-preset-btn" onclick="setSpeedPreset(250, this)">🚀 Oso Azkar</button>
+        </div>
     </div>
 
     <!-- Modal de Configuración -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeSettings()">&times;</span>
-            <h2>🔧 Ezarpenak</h2>
+            <h2>Ezarpenak</h2>
 
-            <h3>🎨 Gai Bisuala</h3>
+            <h3>Gai Bisuala</h3>
             <div class="theme-selector">
                 <div class="theme-btn theme-default active" onclick="setTheme('default')">Lorategia</div>
                 <div class="theme-btn theme-ocean" onclick="setTheme('ocean')">Ozeanoa</div>
@@ -541,50 +573,51 @@
                 <div class="theme-btn theme-space" onclick="setTheme('space')">Espazioa</div>
             </div>
 
-            <h3>🔤 Letra-tipoa</h3>
+            <h3>Letra-tipoa</h3>
             <div class="control-group">
-                <button class="nav-btn active" onclick="setFont('default')">🅰️ Lehenetsia</button>
-                <button class="nav-btn" onclick="setFont('dyslexic')">👓 Dislexia</button>
-                <button class="nav-btn" onclick="setFont('uppercase')">⬆️ Larriak</button>
-                <button class="nav-btn" onclick="setFont('cursive')">✒️ Idazkera</button>
+                <button class="nav-btn active" onclick="setFont('default')">Lehenetsia</button>
+                <button class="nav-btn" onclick="setFont('dyslexic')">Dislexia</button>
+                <button class="nav-btn" onclick="setFont('uppercase')">Maiuskula</button>
+                <button class="nav-btn" onclick="setFont('cursive')">Eskuz Idatzia</button>
             </div>
 
-            <h3>🔦 Nabarmendu Modua</h3>
+            <h3>Nabarmendu Modua</h3>
             <div class="control-group">
-                <button class="nav-btn active" onclick="setHighlightMode('letter')">🔤 Letra</button>
-                <button class="nav-btn" onclick="setHighlightMode('word')">📝 Hitza</button>
+                <button class="nav-btn active" onclick="setHighlightMode('letter')">Letra</button>
+                <button class="nav-btn" onclick="setHighlightMode('syllable')">Silaba</button>
+                <button class="nav-btn" onclick="setHighlightMode('word')">Hitza</button>
             </div>
 
-            <h3>📏 Letra Tamaina</h3>
+            <h3>Letra Tamaina</h3>
             <div class="control-group">
                 <input type="range" id="fontSizeSlider" min="1" max="5" step="0.5" value="2.5"
                     oninput="setFontSize(this.value)" style="width: 100%;">
                 <span id="fontSizeValue">2.5rem</span>
             </div>
 
-            <h3>⏱️ Abiadura</h3>
+            <h3>Abiadura</h3>
             <div class="control-group">
-                <input type="range" id="speedSlider" min="100" max="2000" step="100" value="500"
+                <input type="range" id="speedSlider" min="100" max="3000" step="100" value="1000"
                     oninput="setSpeed(this.value)" style="width: 100%; direction: rtl;">
                 <span id="speedValue">500ms</span>
             </div>
 
-            <h3>📚 Hitz Zerrenda Pertsonalizatua</h3>
+            <h3>Hitz Zerrenda Pertsonalizatua</h3>
             <div class="word-list-editor">
                 <textarea id="customWordList"
                     placeholder="Idatzi zure hitzak edo esaldiak hemen, lerro bakoitzean bat..."></textarea>
                 <br><br>
-                <button class="nav-btn" onclick="loadCustomWords()">� Kargatu</button>
-                <button class="nav-btn" onclick="resetToDefault()">↩️ Berrezarri</button>
-                <button class="nav-btn" onclick="exportWordList()">⬇️ Esportatu</button>
+                <button class="nav-btn" onclick="loadCustomWords()">✓ Kargatu</button>
+                <button class="nav-btn" onclick="resetToDefault()">↻ Berrezarri</button>
+                <button class="nav-btn" onclick="exportWordList()">⬇ Esportatu</button>
                 <input type="file" id="importFile" accept=".txt" style="display: none;" onchange="importWordList()">
-                <button class="nav-btn" onclick="document.getElementById('importFile').click()">⬆️ Inportatu</button>
+                <button class="nav-btn" onclick="document.getElementById('importFile').click()">⬆ Inportatu</button>
             </div>
 
-            <h3>📊 Aurrerapena</h3>
+            <h3>Aurrerapena</h3>
             <div class="control-group">
-                <button class="nav-btn" onclick="resetProgress()">❌ Ezabatu</button>
-                <button class="nav-btn" onclick="exportProgress()">� Esportatu</button>
+                <button class="nav-btn" onclick="resetProgress()">✗ Ezabatu</button>
+                <button class="nav-btn" onclick="exportProgress()">⬇ Esportatu</button>
             </div>
         </div>
     </div>
@@ -634,7 +667,7 @@
         let currentIndex = 0;
         let currentLetterIndex = 0;
         let isPlaying = false;
-        let animationSpeed = 500;
+        let animationSpeed = 1000;
         let animationTimer;
         let currentCase = 'normal';
         let currentDifficulty = 'easy';
@@ -664,6 +697,83 @@
             }
         }
 
+        // Función para dividir palabras en sílabas (Basque/Spanish syllable rules)
+        function splitIntoSyllables(word) {
+            // Simple syllable splitting for Basque/Spanish
+            // Vowels: a, e, i, o, u
+            const vowels = 'aeiouáéíóúàèìòùAEIOUÁÉÍÓÚÀÈÌÒÙ';
+            const syllables = [];
+            let currentSyllable = '';
+            
+            for (let i = 0; i < word.length; i++) {
+                const char = word[i];
+                currentSyllable += char;
+                
+                // Check if current character is a vowel
+                if (vowels.includes(char)) {
+                    // Look ahead to see if we should continue the syllable
+                    let shouldBreak = false;
+                    
+                    if (i === word.length - 1) {
+                        // Last character, end syllable
+                        shouldBreak = true;
+                    } else {
+                        const nextChar = word[i + 1];
+                        const nextNextChar = i + 2 < word.length ? word[i + 2] : '';
+                        
+                        if (!vowels.includes(nextChar)) {
+                            // Next is consonant
+                            if (i + 2 >= word.length || !vowels.includes(nextNextChar)) {
+                                // Consonant followed by consonant or end -> break after this vowel
+                                shouldBreak = false; // Continue to include the consonant
+                            } else {
+                                // Consonant followed by vowel -> break after the consonant
+                                currentSyllable += nextChar;
+                                i++; // Skip the consonant we just added
+                                shouldBreak = true;
+                            }
+                        } else {
+                            // Next is vowel -> break here (hiatus or diphthong handling)
+                            shouldBreak = true;
+                        }
+                    }
+                    
+                    if (shouldBreak && currentSyllable.length > 0) {
+                        syllables.push(currentSyllable);
+                        currentSyllable = '';
+                    }
+                }
+            }
+            
+            // Add any remaining characters
+            if (currentSyllable.length > 0) {
+                syllables.push(currentSyllable);
+            }
+            
+            return syllables.length > 0 ? syllables : [word];
+        }
+
+        // Split text into syllables while preserving spaces and punctuation
+        function splitTextIntoSyllables(text) {
+            const words = text.split(/(\s+)/); // Split but keep spaces
+            const result = [];
+            
+            words.forEach(word => {
+                if (word.trim() === '') {
+                    // It's whitespace
+                    result.push({ type: 'space', content: word });
+                } else {
+                    // It's a word - split into syllables
+                    const syllables = splitIntoSyllables(word);
+                    syllables.forEach(syllable => {
+                        result.push({ type: 'syllable', content: syllable });
+                    });
+                }
+            });
+            
+            return result;
+        }
+
         // Renderizar el texto con spans estáticos para evitar movimientos
         function renderText() {
             const text = transformText(content[currentIndex]);
@@ -675,10 +785,22 @@
                     return `<span id="item-${index}" class="letter">${char}</span>`;
                 }).join('');
                 displayElement.innerHTML = html;
+            } else if (highlightMode === 'syllable') {
+                // Syllable mode
+                const parts = splitTextIntoSyllables(text);
+                let itemIndex = 0;
+                const html = parts.map((part) => {
+                    if (part.type === 'space') {
+                        return `<span class="space">${part.content}</span>`;
+                    } else {
+                        const span = `<span id="item-${itemIndex}" class="syllable">${part.content}</span>`;
+                        itemIndex++;
+                        return span;
+                    }
+                }).join('');
+                displayElement.innerHTML = html;
             } else {
                 // Word mode: split by spaces but keep delimiters to preserve spacing
-                // We want to wrap "words" in spans, but keep spaces outside or in their own spans
-                // Simple approach: split by spaces
                 const parts = text.split(/(\s+)/);
                 let itemIndex = 0;
                 const html = parts.map((part) => {
@@ -721,13 +843,13 @@
             }
 
             isPlaying = true;
-            document.getElementById('playBtn').innerHTML = '⏸️';
+            document.getElementById('playBtn').innerHTML = '⏸ Gelditu';
             animateReading();
         }
 
         function pauseReading() {
             isPlaying = false;
-            document.getElementById('playBtn').innerHTML = '▶️';
+            document.getElementById('playBtn').innerHTML = '▶ Hasi';
             clearTimeout(animationTimer);
         }
 
@@ -740,8 +862,12 @@
             let maxIndex;
             if (highlightMode === 'letter') {
                 maxIndex = currentText.length;
+            } else if (highlightMode === 'syllable') {
+                // Count syllables
+                const parts = splitTextIntoSyllables(currentText);
+                maxIndex = parts.filter(p => p.type === 'syllable').length;
             } else {
-                // Count non-empty parts from split
+                // Word mode: count non-empty parts from split
                 maxIndex = currentText.split(/(\s+)/).filter(p => p.trim() !== '').length;
             }
 
@@ -768,7 +894,7 @@
                 if (prev) prev.classList.remove('current-letter');
 
                 pauseReading();
-                document.getElementById('playBtn').innerHTML = '🎯';
+                document.getElementById('playBtn').innerHTML = '▶ Hasi';
 
                 // Marcar palabra como completada
                 sessionStats.wordsCompleted++;
@@ -807,7 +933,7 @@
             pauseReading();
             currentLetterIndex = 0;
             renderText();
-            document.getElementById('playBtn').innerHTML = '🎯';
+            document.getElementById('playBtn').innerHTML = '▶ Hasi';
         }
 
         function setSpeed(speed) {
@@ -843,15 +969,9 @@
         }
 
         function updateUILanguage(lang) {
-            if (lang === 'eu') {
-                // Cambiar elementos de UI al euskera
-                document.querySelector('h1').textContent = '🌟 Irakurketa Laguntzailea 🌟';
-                document.querySelector('#textDisplay').innerHTML = 'Sakatu "🎯" hasteko!';
-            } else {
-                // Mantener en español
-                document.querySelector('h1').textContent = '🌟 Ayudante de Lectura Pro 🌟';
-                document.querySelector('#textDisplay').innerHTML = '¡Haz clic en "🎯" para comenzar!';
-            }
+            // Always use Basque
+            document.querySelector('h1').textContent = 'Irakurketa Laguntzailea';
+            document.querySelector('#textDisplay').innerHTML = 'Sakatu "Hasi" hasteko!';
         }
 
         function updateActiveButton(selector, activeButton) {
@@ -940,6 +1060,16 @@
             saveSettings();
         }
 
+        function setSpeedPreset(speed, btn) {
+            animationSpeed = speed;
+            document.querySelectorAll('.speed-preset-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            // Sync with settings modal slider
+            document.getElementById('speedSlider').value = speed;
+            document.getElementById('speedValue').textContent = speed + 'ms';
+            saveSettings();
+        }
+
         function setHighlightMode(mode) {
             highlightMode = mode;
             updateActiveButton('.modal .control-group button', event.target); // This might be too broad selector, but works for now
@@ -1008,7 +1138,7 @@
         }
 
         function resetProgress() {
-            if (confirm('¿Estás seguro de que quieres borrar todos los datos de progreso?')) {
+            if (confirm('Ziur zaude aurrerapen datuak ezabatu nahi dituzula?')) {
                 sessionStats = {
                     wordsCompleted: 0,
                     startTime: Date.now(),

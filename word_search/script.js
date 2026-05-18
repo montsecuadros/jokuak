@@ -1,6 +1,56 @@
 // Basque "sopa de letras" (Letra Zopa) for kids
 // Word search: find listed words in the grid by selecting straight lines
 
+// ===== AUDIO & EFFECTS =====
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window['webkitAudioContext'])();
+  return audioCtx;
+}
+
+function playTone(freq, startOffset, duration, gain = 0.28) {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.connect(g); g.connect(ctx.destination);
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    g.gain.setValueAtTime(gain, ctx.currentTime + startOffset);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startOffset + duration);
+    osc.start(ctx.currentTime + startOffset);
+    osc.stop(ctx.currentTime + startOffset + duration);
+  } catch (e) {}
+}
+
+function playWordFoundSound() {
+  playTone(523, 0,    0.18); // C5
+  playTone(659, 0.12, 0.22); // E5
+  playTone(784, 0.24, 0.28); // G5
+}
+
+function playLevelCompleteSound() {
+  [523, 659, 784, 1047, 784, 1047].forEach((f, i) => playTone(f, i * 0.16, 0.32, 0.32));
+}
+
+function launchConfetti() {
+  const colors = ['#ff6b6b','#feca57','#48dbfb','#ff9ff3','#54a0ff','#5f27cd','#00d2d3','#ff9f43'];
+  for (let i = 0; i < 70; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = (Math.random() * 100) + 'vw';
+    p.style.top = '-15px';
+    p.style.width  = (8  + Math.random() * 10) + 'px';
+    p.style.height = (8  + Math.random() * 10) + 'px';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDuration = (1.5 + Math.random() * 2.5) + 's';
+    p.style.animationDelay   = (Math.random() * 0.8) + 's';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 4500);
+  }
+}
+// ===========================
+
 const levels = [
   // 1. Very Easy - Short words (2-4 letters)
   { size: 8,  words: ["UR","SU","ETA","BAI","EZ","OGI","HAR","ILO","JAN","EDAN","LO","HIRU"] },
@@ -366,7 +416,10 @@ function render(p) {
         if (li) {
           li.classList.add('found');
           if (selectionColor) li.style.setProperty('--li-color', selectionColor.outline);
+          li.classList.add('just-found');
+          setTimeout(() => li.classList.remove('just-found'), 600);
         }
+        playWordFoundSound();
         if (selectionOverlay) { selectionOverlay.remove(); selectionOverlay = null; }
         selectedCells = [];
         maybeDone();
@@ -572,19 +625,25 @@ function render(p) {
   };
 
   function showWinAndAdvance() {
+    playLevelCompleteSound();
+    launchConfetti();
     // Overlay message
     const msg = document.createElement('div');
     msg.style.position = 'absolute';
     msg.style.left = '50%';
     msg.style.top = '50%';
     msg.style.transform = 'translate(-50%, -50%)';
-    msg.style.background = 'rgba(255,255,255,0.9)';
-    msg.style.border = '2px solid #46b36b';
-    msg.style.borderRadius = '12px';
-    msg.style.padding = '12px 16px';
-    msg.style.fontWeight = '600';
+    msg.style.background = 'linear-gradient(135deg, #fff9c4, #e8f5e9)';
+    msg.style.border = '3px solid #feca57';
+    msg.style.borderRadius = '20px';
+    msg.style.padding = '20px 28px';
+    msg.style.fontWeight = '700';
+    msg.style.fontSize = '1.4rem';
+    msg.style.textAlign = 'center';
     msg.style.zIndex = '4';
-    msg.textContent = 'Zorionak! Hurrengo jokora...';
+    msg.style.boxShadow = '0 8px 24px rgba(0,0,0,0.2)';
+    msg.style.whiteSpace = 'nowrap';
+    msg.innerHTML = '🎉 Zorionak! 🎉<br><span style="font-size:1rem;font-weight:600;color:#666">Hurrengo jokora...</span>';
     overlayLayer.appendChild(msg);
 
     setTimeout(() => {
