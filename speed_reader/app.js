@@ -9,6 +9,7 @@ const translations = {
         language: "Idioma",
         speed: "Velocidad",
         size: "Tamaño",
+        group: "Grupo",
         manageSentences: "Gestionar Frases",
         close: "Cerrar",
         
@@ -63,6 +64,7 @@ const translations = {
         language: "Hizkuntza",
         speed: "Abiadura",
         size: "Tamaina",
+        group: "Taldea",
         manageSentences: "Esaldiak Kudeatu",
         close: "Itxi",
         
@@ -130,8 +132,8 @@ const sentences = {
 
 // ===== Application State =====
 let appState = {
-    currentLanguage: 'spanish',
-    currentTab: 'spanish',
+    currentLanguage: 'basque',
+    currentTab: 'basque',
     isReading: false,
     isPaused: false,
     wordIndex: 0,
@@ -143,9 +145,10 @@ let appState = {
         wpm: 300,
         fontSize: 40,
         lineHeight: 1.8,
-        letterSpacing: 0.15,
-        bgColor: '#E3F2FD',
-        textColor: '#0D47A1'
+        letterSpacing: 0.05,
+        bgColor: '#eef5f3',
+        textColor: '#1e3d36',
+        wordsPerFlash: 2
     }
 };
 
@@ -208,6 +211,7 @@ function updateUILanguage(lang) {
     document.querySelector('label[for="language-select"]').textContent = `${t.language}:`;
     document.querySelector('label[for="wpm-slider"]').textContent = `${t.speed}:`;
     document.querySelector('label[for="font-size-slider"]').textContent = `${t.size}:`;
+    document.getElementById('words-per-flash-label').textContent = `${t.group}:`;
     
     // Settings Button
     const settingsBtn = document.getElementById('settings-toggle');
@@ -328,7 +332,13 @@ function applyBionicReading(word) {
     const midpoint = Math.ceil(word.length / 2);
     const bold = word.substring(0, midpoint);
     const normal = word.substring(midpoint);
-    return `<strong>${bold}</strong>${normal}`;
+    return `<span class="bionic-word"><strong>${bold}</strong>${normal}</span>`;
+}
+
+function getPauseMultiplier(word) {
+    if (/[.!?]/.test(word)) return 2.0;
+    if (/[,;:]/.test(word)) return 1.5;
+    return 1.0;
 }
 
 // ===== Display Word =====
@@ -336,20 +346,21 @@ function displayWord() {
     if (!appState.isReading || appState.isPaused) return;
 
     if (appState.wordIndex < appState.words.length) {
-        const word = appState.words[appState.wordIndex];
+        const groupSize = appState.settings.wordsPerFlash || 1;
+        const wordGroup = appState.words.slice(appState.wordIndex, appState.wordIndex + groupSize);
         const wordDisplay = document.getElementById('word-display');
-        wordDisplay.innerHTML = applyBionicReading(word);
+        wordDisplay.innerHTML = wordGroup.map(applyBionicReading).join('');
 
         // Update progress
         const percentage = Math.round((appState.wordIndex / appState.words.length) * 100);
         document.getElementById('progress-display').textContent = `${percentage}%`;
-        document.getElementById('word-counter-display').textContent = 
+        document.getElementById('word-counter-display').textContent =
             `${appState.wordIndex}/${appState.words.length}`;
 
-        appState.wordIndex++;
-        
-        // Calculate delay based on WPM
-        const delayMs = (60000 / appState.settings.wpm);
+        const pauseMultiplier = Math.max(...wordGroup.map(getPauseMultiplier));
+        appState.wordIndex += groupSize;
+
+        const delayMs = (60000 / appState.settings.wpm) * groupSize * pauseMultiplier;
         setTimeout(displayWord, delayMs);
     } else {
         // Reading complete - show completion message
@@ -694,6 +705,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const fontSize = parseInt(e.target.value);
         updateSetting('fontSize', fontSize);
         document.getElementById('font-size-display').textContent = `${fontSize}px`;
+    });
+
+    // Words per flash slider
+    document.getElementById('words-per-flash-slider').addEventListener('input', (e) => {
+        const val = parseInt(e.target.value);
+        appState.settings.wordsPerFlash = val;
+        document.getElementById('words-per-flash-display').textContent = `×${val}`;
     });
 
     // Tab buttons

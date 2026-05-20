@@ -21,7 +21,7 @@
                     <label for="language-select">Idioma:</label>
                     <select id="language-select" class="control-select">
                         <option value="spanish">Español</option>
-                        <option value="basque">Euskera</option>
+                        <option value="basque" selected>Euskera</option>
                     </select>
                 </div>
 
@@ -35,6 +35,12 @@
                     <label for="font-size-slider">Tamaño:</label>
                     <input type="range" id="font-size-slider" min="24" max="56" value="40" class="slider">
                     <span id="font-size-display" class="value-display">40px</span>
+                </div>
+
+                <div class="setting-item">
+                    <label for="words-per-flash-slider" id="words-per-flash-label">Grupo:</label>
+                    <input type="range" id="words-per-flash-slider" min="1" max="3" value="2" step="1" class="slider">
+                    <span id="words-per-flash-display" class="value-display">×2</span>
                 </div>
 
                 <button id="settings-toggle" class="btn btn-secondary">Gestionar Frases</button>

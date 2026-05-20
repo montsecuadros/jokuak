@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif;
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            background-color: #eef5f3;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -23,7 +23,7 @@
         }
 
         h1 {
-            color: #2c3e50;
+            color: #3a6b5e;
             margin-bottom: 40px;
             font-size: 3rem;
             text-align: center;
@@ -83,33 +83,33 @@
 
         /* Card specific styles */
         .card-reader {
-            border-color: #4ecdc4;
+            border-color: #5a9e8c;
         }
         .card-reader:hover {
-            background: linear-gradient(to bottom right, #fff, #e0f7fa);
+            background: linear-gradient(to bottom right, #fff, #eef5f3);
         }
         .card-reader .game-title {
-            color: #00b894;
+            color: #4d8b7a;
         }
 
         .card-wordsearch {
-            border-color: #ff7675;
+            border-color: #6ab5a3;
         }
         .card-wordsearch:hover {
-            background: linear-gradient(to bottom right, #fff, #ffebee);
+            background: linear-gradient(to bottom right, #fff, #eef5f3);
         }
         .card-wordsearch .game-title {
-            color: #d63031;
+            color: #3a6b5e;
         }
 
         .card-speedreader {
-            border-color: #fdcb6e;
+            border-color: #aacfc7;
         }
         .card-speedreader:hover {
-            background: linear-gradient(to bottom right, #fff, #fff9e6);
+            background: linear-gradient(to bottom right, #fff, #eef5f3);
         }
         .card-speedreader .game-title {
-            color: #f39c12;
+            color: #5a9e8c;
         }
 
         @keyframes bounce {
@@ -118,13 +118,27 @@
             60% {transform: translateY(-10px);}
         }
 
+        @media (max-width: 900px) {
+            .games-container {
+                gap: 20px;
+            }
+            .game-card {
+                width: calc(50% - 10px);
+                min-width: 240px;
+            }
+        }
+
         @media (max-width: 600px) {
             h1 {
                 font-size: 2rem;
             }
+            .games-container {
+                flex-direction: column;
+                align-items: center;
+            }
             .game-card {
                 width: 100%;
-                max-width: 350px;
+                max-width: 380px;
             }
         }
     </style>
