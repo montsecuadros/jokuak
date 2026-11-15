@@ -561,6 +561,95 @@ body {
     font-weight: bold;
 }
 
+/* ===== Speed Presets ===== */
+.speed-presets {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 1.25rem 0 0.5rem;
+}
+
+.speed-preset-btn {
+    padding: 0.6rem 1.1rem;
+    background-color: #eef5f3;
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.speed-preset-btn:hover {
+    border-color: var(--primary-color);
+    background-color: #d5ece7;
+}
+
+.speed-preset-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* ===== Font Selector ===== */
+.font-selector-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.font-selector-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.font-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.font-type-btn {
+    padding: 0.5rem 1rem;
+    background-color: #eef5f3;
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.font-type-btn:hover {
+    border-color: var(--primary-color);
+    background-color: #d5ece7;
+}
+
+.font-type-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Font type classes applied to the word display */
+.word-display.font-normal {
+    font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+}
+
+.word-display.font-uppercase {
+    text-transform: uppercase;
+}
+
+.word-display.font-cursive {
+    font-family: 'Brush Script MT', 'Apple Chancery', 'Comic Sans MS', cursive;
+}
+
 /* ===== Button Controls ===== */
 .button-controls {
     display: flex;

@@ -51,6 +51,32 @@ const translations = {
         // Alerts
         noSentences: "No hay frases disponibles para este idioma. Por favor, añade frases primero.",
         
+        // Speed presets
+        presetSlowest: "Oso Motel",
+        presetSlow: "Motel",
+        presetFast: "Azkar",
+        presetFastest: "Oso Azkar",
+
+        // Font types
+        fontType: "Letra-tipoa",
+        fontDyslexic: "OpenDyslexic",
+        fontNormal: "Normal",
+        fontUppercase: "Maiuskula",
+        fontCursive: "Eskuz Idatzia",
+
+        // Speed presets
+        presetSlowest: "Muy Lento",
+        presetSlow: "Lento",
+        presetFast: "Rápido",
+        presetFastest: "Muy Rápido",
+
+        // Font types
+        fontType: "Tipo de Letra",
+        fontDyslexic: "OpenDyslexic",
+        fontNormal: "Normal",
+        fontUppercase: "Mayúsculas",
+        fontCursive: "Cursiva",
+
         // Footer
         footerTip: "Consejo: Ajusta la configuración según tus necesidades para una mejor experiencia de lectura.",
         footerCopyright: "© 2024 Lector Rápido"
@@ -106,6 +132,19 @@ const translations = {
         // Alerts
         noSentences: "Ez dago esaldirik hizkuntza honetarako. Mesedez, gehitu esaldiak lehenik.",
         
+        // Speed presets
+        presetSlowest: "Oso Motel",
+        presetSlow: "Motel",
+        presetFast: "Azkar",
+        presetFastest: "Oso Azkar",
+
+        // Font types
+        fontType: "Letra-tipoa",
+        fontDyslexic: "OpenDyslexic",
+        fontNormal: "Normal",
+        fontUppercase: "Maiuskula",
+        fontCursive: "Eskuz Idatzia",
+
         // Footer
         footerTip: "Aholkua: Doitu konfigurazioa zure beharren arabera irakurketa esperientzia hobea izateko.",
         footerCopyright: "© 2024 Irakurgailu Bizkorra"
@@ -134,6 +173,7 @@ const sentences = {
 let appState = {
     currentLanguage: 'basque',
     currentTab: 'basque',
+    currentFont: 'dyslexic',
     isReading: false,
     isPaused: false,
     wordIndex: 0,
@@ -212,6 +252,20 @@ function updateUILanguage(lang) {
     document.querySelector('label[for="wpm-slider"]').textContent = `${t.speed}:`;
     document.querySelector('label[for="font-size-slider"]').textContent = `${t.size}:`;
     document.getElementById('words-per-flash-label').textContent = `${t.group}:`;
+
+    // Speed presets
+    const presets = document.querySelectorAll('.speed-preset-btn');
+    presets[0].querySelector('.preset-label').textContent = t.presetSlowest;
+    presets[1].querySelector('.preset-label').textContent = t.presetSlow;
+    presets[2].querySelector('.preset-label').textContent = t.presetFast;
+    presets[3].querySelector('.preset-label').textContent = t.presetFastest;
+
+    // Font selector
+    document.getElementById('font-type-title').textContent = t.fontType;
+    document.querySelector('.font-type-btn[data-font="dyslexic"]').textContent = t.fontDyslexic;
+    document.querySelector('.font-type-btn[data-font="normal"]').textContent = t.fontNormal;
+    document.querySelector('.font-type-btn[data-font="uppercase"]').textContent = t.fontUppercase;
+    document.querySelector('.font-type-btn[data-font="cursive"]').textContent = t.fontCursive;
     
     // Settings Button
     const settingsBtn = document.getElementById('settings-toggle');
@@ -325,6 +379,29 @@ function switchTab(language) {
     document.getElementById(`sentences-list-${language}`).classList.add('active');
     
     appState.currentTab = language;
+}
+
+// ===== Speed Presets =====
+function setSpeedPreset(wpm) {
+    appState.settings.wpm = wpm;
+    document.getElementById('wpm-slider').value = wpm;
+    document.getElementById('wpm-display').textContent = `${wpm} PPM`;
+    document.querySelectorAll('.speed-preset-btn').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.wpm) === wpm);
+    });
+}
+
+// ===== Font Type =====
+function setFont(fontType) {
+    appState.currentFont = fontType;
+    const wordDisplay = document.getElementById('word-display');
+    wordDisplay.classList.remove('font-normal', 'font-uppercase', 'font-cursive');
+    if (fontType !== 'dyslexic') {
+        wordDisplay.classList.add(`font-${fontType}`);
+    }
+    document.querySelectorAll('.font-type-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.font === fontType);
+    });
 }
 
 // ===== Bionic Reading =====
@@ -698,6 +775,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const wpm = parseInt(e.target.value);
         appState.settings.wpm = wpm;
         document.getElementById('wpm-display').textContent = `${wpm} PPM`;
+        document.querySelectorAll('.speed-preset-btn').forEach(btn => btn.classList.remove('active'));
+    });
+
+    // Speed preset buttons
+    document.querySelectorAll('.speed-preset-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            setSpeedPreset(parseInt(this.dataset.wpm));
+        });
+    });
+
+    // Font type buttons
+    document.querySelectorAll('.font-type-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            setFont(this.dataset.font);
+        });
     });
 
     // Font size slider

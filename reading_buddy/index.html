@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irakurri eta Koloreztatu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="topbar">
+        <a href="../index.html" class="home-link" aria-label="Atzera">←</a>
+        <div class="topbar-stats">
+            <span class="stat">⭐ <span id="stars-count">0</span></span>
+            <span class="stat">🪙 <span id="coins-count">0</span></span>
+        </div>
+        <button id="settings-toggle" class="icon-btn" aria-label="Ezarpenak">⚙️</button>
+    </header>
+
+    <main class="app-main">
+        <!-- HOME -->
+        <section id="screen-home" class="screen active">
+            <div class="companion" id="companion">
+                <svg viewBox="0 0 200 200" width="150" height="150">
+                    <g id="companion-patches"></g>
+                    <ellipse cx="100" cy="120" rx="68" ry="62" id="companion-body" fill="#cfd8dc"></ellipse>
+                    <circle cx="80" cy="105" r="9" fill="#2c3e50"></circle>
+                    <circle cx="120" cy="105" r="9" fill="#2c3e50"></circle>
+                    <path d="M82 135 Q100 150 118 135" stroke="#2c3e50" stroke-width="5" fill="none" stroke-linecap="round"></path>
+                </svg>
+                <div class="companion-accessory" id="companion-accessory"></div>
+            </div>
+            <h1 id="home-title" data-i18n="homeTitle">Prest irakurtzeko?</h1>
+            <p id="home-subtitle" data-i18n="homeSubtitle">Irakurri esaldi bat, erantzun eta jolastu koloreekin</p>
+            <button id="start-btn" class="btn btn-primary btn-large" data-i18n="startBtn">Hasi</button>
+        </section>
+
+        <!-- READING -->
+        <section id="screen-reading" class="screen">
+            <div class="reading-card">
+                <p id="reading-text" class="reading-text"></p>
+            </div>
+            <button id="ready-btn" class="btn btn-primary btn-large" data-i18n="readyBtn">Prest!</button>
+        </section>
+
+        <!-- COMPREHENSION CHECK -->
+        <section id="screen-check" class="screen">
+            <h2 id="check-title" class="check-title"></h2>
+            <p id="check-context" class="check-context"></p>
+            <div id="check-tiles" class="tiles-grid"></div>
+            <p id="check-message" class="check-message" aria-live="polite"></p>
+        </section>
+
+        <!-- CELEBRATION -->
+        <section id="screen-celebration" class="screen">
+            <div class="companion companion-celebrate" id="companion-celebrate">
+                <svg viewBox="0 0 200 200" width="170" height="170">
+                    <g id="companion-patches-celebrate"></g>
+                    <ellipse cx="100" cy="120" rx="68" ry="62" id="companion-body-celebrate" fill="#cfd8dc"></ellipse>
+                    <circle cx="80" cy="105" r="9" fill="#2c3e50"></circle>
+                    <circle cx="120" cy="105" r="9" fill="#2c3e50"></circle>
+                    <path d="M78 132 Q100 158 122 132" stroke="#2c3e50" stroke-width="5" fill="none" stroke-linecap="round"></path>
+                </svg>
+            </div>
+            <p id="celebration-msg" class="celebration-msg" data-i18n="correctMsg">Bikain! ⭐</p>
+            <p id="levelup-msg" class="levelup-msg" data-i18n="levelUpMessage" hidden>Maila berria!</p>
+            <button id="celebration-continue-btn" class="btn btn-primary btn-large" data-i18n="celebrationContinue">Jarraitu</button>
+        </section>
+
+        <!-- MINI-GAME -->
+        <section id="screen-minigame" class="screen">
+            <h2 id="minigame-title">Kolore-jokoa!</h2>
+            <p id="minigame-instructions">Ukitu letra bat eta gero bere kolorea</p>
+            <div class="minigame-timer-bar"><div id="minigame-timer-fill" class="minigame-timer-fill"></div></div>
+            <div id="minigame-content" class="minigame-content"></div>
+
+            <div id="minigame-result" class="minigame-result" hidden>
+                <p class="minigame-result-msg">
+                    <span data-i18n="minigameDone">Oso ondo! Irabazi dituzu</span>
+                    <span id="minigame-result-coins"></span>
+                    <span data-i18n="minigameCoinsSuffix">txanpon</span>
+                    🪙
+                </p>
+                <button id="minigame-back-btn" class="btn btn-primary btn-large" data-i18n="backHomeBtn">Itzuli</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="settingsTitle">Ezarpenak</h2>
+                <button id="settings-close" class="icon-btn" aria-label="Itxi">✕</button>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" data-i18n="languageLabel">Hizkuntza</label>
+                <div class="btn-row">
+                    <button class="lang-btn" data-lang="basque" data-i18n="langBasque">Euskara</button>
+                    <button class="lang-btn" data-lang="spanish" data-i18n="langSpanish">Español</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="font-size-slider" data-i18n="fontSizeLabel">Letra-tamaina</label>
+                <input type="range" id="font-size-slider" min="28" max="64" step="2" value="40">
+            </div>
+
+            <div class="control-group debug-jump">
+                <label class="control-label" data-i18n="debugSectionTitle">🛠️ Joan puntu batera</label>
+                <select id="debug-level-select" class="control-select">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+                <select id="debug-sentence-select" class="control-select"></select>
+                <button id="debug-jump-btn" class="btn btn-secondary" data-i18n="debugJumpBtn">Joan hona</button>
+                <button id="debug-reset-btn" class="btn btn-secondary" data-i18n="debugResetBtn">Berrezarri aurrerapena</button>
+            </div>
+
+            <button id="settings-close-btn" class="btn btn-secondary btn-large" data-i18n="closeBtn">Itxi</button>
+        </div>
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="content.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
