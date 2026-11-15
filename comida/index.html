@@ -204,13 +204,13 @@ async function sync(manual){
  const before=sig();
  try{
   const r=await fetch(S.url,{method:'POST',body:JSON.stringify({clave:S.key,entries:S.entries.map(e=>Object.assign({},e,{fase:phase(e.d)})),deleted:sent})});
-  const d=await r.json();
+  const tx=await r.text();let d;try{d=JSON.parse(tx)}catch(_){throw new Error('resp:'+tx.replace(/<[^>]+>/g,' ').replace(/ +/g,' ').trim().slice(0,160))}
   if(d.error)throw new Error(d.error);
   applyRemote(d);
   S.del=S.del.filter(x=>!sent.includes(x));S.last=Date.now();S.err=false;save();
   if(manual)toast('Sincronizado ✓');
   if(manual||(sig()!=before&&S.tab!='reg'&&!S.edit))render();
- }catch(e){S.err=true;if(manual)toast(e.message=='clave'?'Clave incorrecta':'No se pudo conectar. Revisa la dirección y que el script esté publicado para "Cualquier usuario".',5000)}
+ }catch(e){S.err=true;if(manual){const m=e.message||'';toast(m=='clave'?'Clave incorrecta: no coincide con la del script':m.indexOf('resp:')==0?'El script respondió algo inesperado: '+m.slice(5):'No se pudo conectar ('+m+'). El visor o navegador puede estar bloqueando la conexión.',9000)}}
  sync.busy=false;upd();
 }
 function mark(){S.bk=Date.now();save();render();toast('Copia guardada ✓')}
