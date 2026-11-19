@@ -4,7 +4,7 @@
 <title>Diario de comidas y dolor de tripa (con hoja de Google)</title>
 <link rel="icon" href="data:,">
 <style>
-:root{--bg:#faf8f4;--card:#fff;--tx:#2a2622;--mu:#7a7168;--ac:#2f7d6b;--ac2:#e3f1ed;--pn:#c2553d;--pn2:#fbece8;--bd:#e5dfd5;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#f4f9fb;--card:#fff;--tx:#2a2622;--mu:#7a7168;--ac:#2f7d6b;--ac2:#e3f1ed;--pn:#c2553d;--pn2:#fbece8;--bd:#e5dfd5;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1917;--card:#262321;--tx:#efe9e1;--mu:#a39a90;--ac:#5cbfa8;--ac2:#243a35;--pn:#e8836b;--pn2:#3b2722;--bd:#3a3531;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#1b1917;--card:#262321;--tx:#efe9e1;--mu:#a39a90;--ac:#5cbfa8;--ac2:#243a35;--pn:#e8836b;--pn2:#3b2722;--bd:#3a3531;color-scheme:dark}
 *{box-sizing:border-box}
@@ -14,7 +14,7 @@ h1{font-size:20px;margin:6px 0 12px}
 h2{font-size:16px;margin:0 0 10px}
 .tabs{display:flex;gap:6px;margin-bottom:12px}
 .tabs button{flex:1;padding:10px 4px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;font:inherit;font-weight:600}
-.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.tabs button.on{background:var(--ac);color:var(--onac,#fff);border-color:var(--ac)}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
 .card.pain{border-color:var(--pn)}
 .nav{display:flex;align-items:center;gap:8px;margin-bottom:10px}
@@ -27,10 +27,10 @@ input,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px soli
 label{display:block;font-size:13px;color:var(--mu);margin:10px 0 4px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{padding:8px 12px;border-radius:99px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;font-size:14px}
-.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.chip.on{background:var(--ac);color:var(--onac,#fff);border-color:var(--ac)}
 .pain .chip.on{background:var(--pn);border-color:var(--pn)}
 .row{display:flex;gap:10px}.row>*{flex:1}
-.go{width:100%;margin-top:12px;padding:13px;border:0;border-radius:12px;background:var(--ac);color:#fff;font:inherit;font-weight:700}
+.go{width:100%;margin-top:12px;padding:13px;border:0;border-radius:12px;background:var(--ac);color:var(--onac,#fff);font:inherit;font-weight:700}
 .pain .go{background:var(--pn)}
 .it{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--bd)}
 .it:last-child{border:0}
@@ -57,10 +57,10 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const MEALS=['Desayuno','Media mañana','Comida','Merienda','Cena','Otro'];
 const SYM=['Hinchazón','Gases','Diarrea','Estreñimiento','Náuseas','Vómitos'];
 const KEY='diario-tripa-v1';
-let S={entries:[],start:'2026-11-20',name:'',tab:'reg',day:ymd(new Date()),url:'',key:'',del:[],last:0,dev:'',err:false,pw:null,locked:false,hid:0};
-try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);S.entries=o.entries||[];S.start=o.start||S.start;S.name=o.name||'';S.bk=o.bk||0;S.url=o.url||'';S.key=o.key||'';S.del=o.del||[];S.last=o.last||0;S.dev=o.dev||'';S.pw=o.pw||null;S.locked=!!S.pw}}catch(e){}
+let S={entries:[],start:'2026-11-20',name:'',tab:'reg',day:ymd(new Date()),url:'',key:'',del:[],last:0,dev:'',err:false,pw:null,locked:false,hid:0,th:'turquesa',mode:'auto'};
+try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);S.entries=o.entries||[];S.start=o.start||S.start;S.name=o.name||'';S.bk=o.bk||0;S.url=o.url||'';S.key=o.key||'';S.del=o.del||[];S.last=o.last||0;S.dev=o.dev||'';S.pw=o.pw||null;S.locked=!!S.pw;S.th=o.th||'turquesa';S.mode=o.mode||'auto'}}catch(e){}
 if(!S.dev)S.dev=Math.random().toString(36).slice(2,8);
-function save(){try{localStorage.setItem(KEY,JSON.stringify({entries:S.entries,start:S.start,name:S.name,bk:S.bk||0,url:S.url,key:S.key,del:S.del,last:S.last,dev:S.dev,pw:S.pw}))}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({entries:S.entries,start:S.start,name:S.name,bk:S.bk||0,url:S.url,key:S.key,del:S.del,last:S.last,dev:S.dev,pw:S.pw,th:S.th,mode:S.mode}))}catch(e){}}
 function toast(t,ms){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,ms||1800)}
 const sl=d=>d>=S.start;
 const phase=d=>sl(d)?'Sin lactosa':'Dieta normal';
@@ -124,10 +124,11 @@ function repView(){return `<div class="card noprint"><label style="margin-top:0"
  <div class="card"><textarea class="rep" id="rep" readonly>${esc(report())}</textarea>
  <div class="row noprint" style="margin-top:10px"><button class="go" style="margin:0" data-a="copy">Copiar</button><button class="go" style="margin:0" data-a="share">Compartir</button><button class="go" style="margin:0" data-a="print">Imprimir / PDF</button></div></div>
  <div class="card noprint"><h2>🔀 Unir con el diario de otro móvil</h2><p class="mu" style="margin-top:0">1) Pulsa «Copiar mis datos» y envíaselo por WhatsApp a la otra persona.<br>2) Pega aquí el código que te envíe ella y pulsa «Unir». Se añade lo que falte y se omiten los duplicados.</p><button class="go" style="margin:0 0 10px" data-a="exp">Copiar mis datos</button><textarea id="imp" rows="3" placeholder="Pega aquí el código del otro móvil (empieza por DIARIO1:)"></textarea><button class="go" data-a="imp">Unir y quitar duplicados</button></div>
+ <div class="card noprint"><h2>🎨 Colores</h2><label style="margin-top:0">Color principal</label><div class="chips">${Object.keys(THEMES).map(k=>`<button class="chip ${S.th==k?'on':''}" data-a="th" data-v="${k}"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${THEMES[k][1]};margin-right:6px;border:1px solid #fff8"></span>${THEMES[k][0]}</button>`).join('')}</div><label>Modo</label><div class="chips">${[['auto','Automático'],['light','Claro'],['dark','Oscuro']].map(m=>`<button class="chip ${(S.mode||'auto')==m[0]?'on':''}" data-a="mode" data-v="${m[0]}">${m[1]}</button>`).join('')}</div></div>
  <div class="card noprint"><h2>🔒 Contraseña de la app</h2>${S.pw?`<p class="mu" style="margin-top:0">Activada. Se pide al abrir la app y tras unos minutos sin usarla.</p><button class="go" style="margin:0 0 12px" data-a="lockNow">Bloquear ahora</button><label>Contraseña actual</label><input type="password" id="pc" autocomplete="off"><label>Nueva contraseña (vacía para quitarla)</label><input type="password" id="pn" autocomplete="off"><button class="go" data-a="chpw">Cambiar o quitar</button>`:`<p class="mu" style="margin-top:0">Pide una contraseña al abrir la app en este móvil.</p><label>Contraseña (mínimo 4 caracteres)</label><input type="password" id="p1" autocomplete="off"><label>Repetir contraseña</label><input type="password" id="p2" autocomplete="off"><button class="go" data-a="setpw">Poner contraseña</button>`}</div>
  <div class="card noprint"><h2>☁️ Hoja de Google</h2><p class="mu" style="margin-top:0">Pega la dirección del script y la clave. Después se sincroniza solo al anotar y al abrir la app.</p><label>Dirección del script (termina en /exec)</label><input id="gu" value="${esc(S.url)}" placeholder="https://script.google.com/macros/s/.../exec"><label>Clave</label><input id="gk" value="${esc(S.key)}"><div class="row" style="margin-top:12px"><button class="go" style="margin:0" data-a="gsave">Guardar y sincronizar</button><button class="go" style="margin:0" data-a="gsync">Sincronizar ahora</button></div><p class="mu" style="color:var(--pn);margin:10px 0 0">${esc(S.errm||'')}</p></div>
  <div class="card noprint"><h2>💾 Copia en un archivo</h2><p class="mu" style="margin-top:0">${S.bk?'Última copia: '+new Date(S.bk).toLocaleString('es-ES'):'Todavía no has guardado ninguna copia.'}${S.entries.length&&!(S.bk&&Date.now()-S.bk<864e5)?' ⚠️ Conviene guardar una copia hoy.':''}</p><div class="row"><button class="go" style="margin:0" data-a="bk">Guardar copia</button><button class="go" style="margin:0" data-a="ld">Cargar copia</button></div><input type="file" id="fil" style="display:none"></div>
- <p class="mu noprint">Versión 4 (15 noviembre). Los datos se guardan en este navegador y dispositivo (y, con «Guardar copia», también en un archivo). Usa siempre el mismo y envía el informe al médico por mensaje o correo.</p>`}
+ <p class="mu noprint">Versión 7 (19 nov). Los datos se guardan en este navegador y dispositivo (y, con «Guardar copia», también en un archivo). Usa siempre el mismo y envía el informe al médico por mensaje o correo.</p>`}
 
 function render(){if(S.locked){if(!$('#lp'))lockView();return}
  $('#app').innerHTML=cloud()+tabs()+(S.tab=='reg'?regView():S.tab=='dia'?diaView():repView())}
@@ -158,6 +159,8 @@ document.addEventListener('click',ev=>{
  else if(a=='gsave'){S.url=$('#gu').value.trim();S.key=$('#gk').value.trim();save();sync(true)}
  else if(a=='gsync')sync(true);
  else if(a=='unlock')doUnlock();
+ else if(a=='th'){S.th=v;save();applyTheme();render()}
+ else if(a=='mode'){S.mode=v;save();applyTheme();render()}
  else if(a=='lockNow'){S.locked=true;render()}
  else if(a=='setpw'){const a1=$('#p1').value,a2=$('#p2').value;if(a1.length<4){toast('Mínimo 4 caracteres',3000);return}if(a1!==a2){toast('Las contraseñas no coinciden',3000);return}const sl=Math.random().toString(36).slice(2,10);S.pw={s:sl,h:hp(a1,sl)};save();render();toast('Contraseña activada ✓')}
  else if(a=='chpw'){if(hp($('#pc').value,S.pw.s)!==S.pw.h){toast('La contraseña actual no es correcta',3000);return}const nw=$('#pn').value;if(!nw){S.pw=null;save();render();toast('Contraseña quitada');return}if(nw.length<4){toast('Mínimo 4 caracteres',3000);return}const sl=Math.random().toString(36).slice(2,10);S.pw={s:sl,h:hp(nw,sl)};save();render();toast('Contraseña cambiada ✓')}
@@ -177,6 +180,12 @@ function doMerge(){mergeText($('#imp').value)}
 function mergeText(raw){const m=raw.match(/DIARIO1:([A-Za-z0-9+/=]+)/);let o;try{o=JSON.parse(decodeURIComponent(escape(atob(m[1]))))}catch(e){toast('Código no válido. Pega el texto completo que empieza por DIARIO1:',4000);return}
  let add=0,dup=0;(o.entries||[]).forEach(e=>{if(!e||!e.t||!e.d||!e.h)return;if(e.t=='p')e.sym=e.sym||[];if(S.entries.some(x=>isDup(x,e))){dup++;return}if(S.entries.some(x=>x.id==e.id))e.id=Date.now()*1000+Math.floor(Math.random()*1000);S.entries.push(e);add++});
  if(!S.name&&o.name)S.name=o.name;if(o.start&&S.entries.length==add)S.start=o.start;saveS();render();toast('Añadidos '+add+' registros. Duplicados omitidos: '+dup,5000)}
+const THEMES={turquesa:['Azul turquesa','#0a7f9c','#def1f6','#4cc3dc','#1c3640'],verde:['Verde','#2f7d6b','#e3f1ed','#5cbfa8','#243a35'],azul:['Azul','#2b6cb0','#e4eef9','#6aa9e8','#22344a'],morado:['Morado','#6b4fb0','#ece7f8','#a794e0','#2f2944'],rosa:['Rosa','#b0457a','#f8e6ef','#e58ab4','#412636'],naranja:['Naranja','#b8600c','#fbeedd','#e8a04d','#40301b'],gris:['Gris','#4a5560','#e9ecef','#a8b3bd','#2c3238']};
+function applyTheme(){const r=document.documentElement,m=S.mode||'auto';
+ if(m=='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',m);
+ let dark=m=='dark';try{if(m=='auto')dark=matchMedia('(prefers-color-scheme: dark)').matches}catch(e){}
+ const t=THEMES[S.th]||THEMES.turquesa;
+ r.style.setProperty('--ac',dark?t[3]:t[1]);r.style.setProperty('--ac2',dark?t[4]:t[2]);r.style.setProperty('--onac',dark?'#10201f':'#fff')}
 function h53(str,seed){let h1=0xdeadbeef^seed,h2=0x41c6ce57^seed;for(let i=0,ch;i<str.length;i++){ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return 4294967296*(2097151&h2)+(h1>>>0)}
 function hp(pw,salt){let x=salt+pw;for(let i=0;i<3000;i++)x=h53(x,i)+salt;return String(x)}
 function lockView(){$('#app').innerHTML=`<div class="card" style="margin-top:40px;text-align:center"><h2>🔒 Diario protegido</h2><p class="mu">Escribe la contraseña para entrar.</p><input type="password" id="lp" autocomplete="off" placeholder="Contraseña" style="text-align:center"><p id="lerr" style="color:var(--pn);min-height:20px;margin:8px 0 0"></p><button class="go" data-a="unlock">Entrar</button><p style="margin-top:14px"><button class="x" style="font-size:14px;text-decoration:underline" data-a="forgot">¿Has olvidado la contraseña?</button></p></div>`;setTimeout(()=>{const l=$('#lp');if(l)l.focus()},50)}
@@ -225,6 +234,7 @@ document.addEventListener('change',ev=>{
 });
 render();
 try{navigator.storage.persist()}catch(e){}
+applyTheme();try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme)}catch(e){}
 if(S.url)sync(false);
 setInterval(()=>{if(S.url&&!document.hidden)sync(false)},60000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.url)sync(false)});
